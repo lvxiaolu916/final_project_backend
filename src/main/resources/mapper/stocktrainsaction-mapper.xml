@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--注意对应哪个mapper类必须要对应-->
+<mapper namespace="com.training.backend.dao.StockTrainsactionMapper">
+
+    <!--    这里要和数据库的列名一致，因为是直接查数据库-->
+    <sql id="selectFields">
+        stock_id, user_id, volume, trainsaction_status, create_time
+    </sql>
+
+    <sql id="insertFields">
+        stock_id, user_id, volume, trainsaction_status, create_time
+    </sql>
+
+    <select id="selectStockTrainsactionByUserId" resultType="StockTrainsaction">
+        select <include refid="selectFields"></include>
+        from stock_trainsaction
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertStockTrainsaction" parameterType="StockTrainsaction">
+        insert into stock_trainsaction (<include refid="insertFields"></include>)
+        values(#{stockId}, #{userId}, #{volume}, #{trainsactionStatus}, #{createTime})
+    </insert>
+
+</mapper>
