@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
 
-    int updatePrincipalHoldingsByUserId(int userId, int principalHoldings);
+    int updatePrincipalHoldingsByUserId(int userId, double principalHoldings);
 
     User selectUserByUserId(int userId);
 

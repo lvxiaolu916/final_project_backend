@@ -7,5 +7,5 @@ public class User {
     int userId;
     String userName;
     String userSex;
-    int principalHoldings;
+    double principalHoldings;
 }

@@ -18,7 +18,7 @@ public class UserMapperTests {
     @Autowired
     private UserMapper userMapper;
 
-    @Ignore
+//    @Ignore
     @Test
     public void insertUserTest() {
         User user = new User();
@@ -37,7 +37,7 @@ public class UserMapperTests {
 
     @Test
     public void updatePrincipalHoldingsByUserIdTest() {
-        Assert.assertEquals(userMapper.updatePrincipalHoldingsByUserId(1,1000),1);
+        Assert.assertEquals(userMapper.updatePrincipalHoldingsByUserId(1, 102.56),1);
     }
 
 
