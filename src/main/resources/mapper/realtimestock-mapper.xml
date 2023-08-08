@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--注意对应哪个mapper类必须要对应-->
+<mapper namespace="com.training.backend.dao.RealTimeStockMapper">
+
+    <!--    这里要和数据库的列名一致，因为是直接查数据库-->
+    <sql id="selectFields">
+        stock_id, stock_name, current_price, stock_margin, fluctuation
+    </sql>
+
+    <sql id="insertFields">
+        stock_id, stock_name, current_price, stock_margin, fluctuation
+    </sql>
+
+    <insert id="insertRealTimeStock" parameterType="RealTimeStock">
+        insert into real_time_stock (<include refid="insertFields"></include>)
+        values(#{stockId}, #{stockName}, #{currentPrice}, #{stockMargin}, #{fluctuation})
+    </insert>
+
+    <select id="selectRealTimeStockAll" resultType="RealTimeStock">
+        select <include refid="selectFields"></include>
+        from real_time_stock
+    </select>
+
+    <select id="selectRealTimeStockByStockId" resultType="RealTimeStock">
+        select <include refid="selectFields"></include>
+        from real_time_stock
+        where stock_id=#{stockId}
+    </select>
+
+    <select id="selectRealTimeStockByStockName" resultType="RealTimeStock">
+        select <include refid="selectFields"></include>
+        from real_time_stock
+        where stock_name=#{stockName}
+    </select>
+
+
+    <update id="updatePriceByStockId">
+        update real_time_stock set current_price=#{currentPrice}
+        where stock_id=#{stockId}
+    </update>
+
+    <update id="updatePriceByStockName">
+        update real_time_stock set current_price=#{currentPrice}
+        where stock_name=#{stockName}
+    </update>
+
+    <update id="updateMarginByStockId">
+        update real_time_stock set stock_margin=#{stockMargin}
+        where stock_id=#{stockId}
+    </update>
+
+    <update id="updateMarginByStockName">
+        update real_time_stock set stock_margin=#{stockMargin}
+        where stock_name=#{stockName}
+    </update>
+
+    <update id="updateFluctuationByStockId">
+        update real_time_stock set fluctuation=#{fluctuation}
+        where stock_id=#{stockId}
+    </update>
+
+    <update id="updateFluctuationByStockName">
+        update real_time_stock set fluctuation=#{fluctuation}
+        where stock_name=#{stockName}
+    </update>
+
+
+</mapper>
