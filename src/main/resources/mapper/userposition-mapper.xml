@@ -10,17 +10,17 @@
         user_id, stock_id, volume, principal_input
     </sql>
 
-    <update id="updateUserPosition" parameterType="UserPosition">
+    <update id="updateUserPositionByUserPosition" parameterType="UserPosition">
         update user_position set volume = #{volume}, principal_input = #{principalInput}
         where user_id = #{userId} and stock_id = #{stockId}
     </update>
 
-    <select id="findVolumeAndPrincipalInput" resultType="UserPosition">
+    <select id="selectUserPositionByUserIdAndStockId" resultType="UserPosition">
         select <include refid="selectFields"/>
         where user_id = #{userId} and stock_id = #{stockId}
     </select>
 
-    <delete id="deleteUserPosition">
+    <delete id="deleteUserPositionByUserIdAndStockId">
         delete from user_position where user_id = #{userId} and stock_id = #{stockId}
     </delete>
 
@@ -29,7 +29,7 @@
         values(#{userId}, #{stockId}, #{volume}, #{principalInput})
     </insert>
 
-    <select id="findUserPositionByUserId" parameterType="Integer" resultType="UserPosition">
+    <select id="selectUserPositionListByUserId" parameterType="Integer" resultType="UserPosition">
         select <include refid="selectFields"/>
         where user_id = #{userId}
     </select>

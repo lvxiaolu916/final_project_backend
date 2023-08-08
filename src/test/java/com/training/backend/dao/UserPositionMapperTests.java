@@ -26,12 +26,12 @@ public class UserPositionMapperTests {
 
     @Test
     public void findVolumeAndPrincipalInputTest(){
-        Assertions.assertNotNull(userPositionMapper.findVolumeAndPrincipalInput(1,1));
+        Assertions.assertNotNull(userPositionMapper.selectUserPositionByUserIdAndStockId(1,1));
     }
 
     @Test
     public void findUserPositionByUserIdTest(){
-        Assertions.assertNotNull(userPositionMapper.findUserPositionByUserId(1));
+        Assertions.assertNotNull(userPositionMapper.selectUserPositionListByUserId(1));
     }
 
     @Test
@@ -41,11 +41,11 @@ public class UserPositionMapperTests {
         userPosition.setStockId(1);
         userPosition.setVolume(1000);
         userPosition.setPrincipalInput(10000);
-        Assertions.assertEquals(1,userPositionMapper.updateUserPosition(userPosition));
+        Assertions.assertEquals(1,userPositionMapper.updateUserPositionByUserPosition(userPosition));
     }
 
     @Test
     public void deleteUserPositionTest(){
-        Assertions.assertEquals(1,userPositionMapper.deleteUserPosition(1,1));
+        Assertions.assertEquals(1,userPositionMapper.deleteUserPositionByUserIdAndStockId(1,1));
     }
 }
