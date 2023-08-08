@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.training.backend.dao.UserPositionMapper">
+    <sql id="selectFields">
+        user_id, stock_id, volume, principal_input from user_position
+    </sql>
+
+    <sql id="insertFields">
+        user_id, stock_id, volume, principal_input
+    </sql>
+
+    <update id="updateUserPosition" parameterType="UserPosition">
+        update user_position set volume = #{volume}, principal_input = #{principalInput}
+        where user_id = #{userId} and stock_id = #{stockId}
+    </update>
+
+    <select id="findVolumeAndPrincipalInput" resultType="UserPosition">
+        select <include refid="selectFields"/>
+        where user_id = #{userId} and stock_id = #{stockId}
+    </select>
+
+    <delete id="deleteUserPosition">
+        delete from user_position where user_id = #{userId} and stock_id = #{stockId}
+    </delete>
+
+    <insert id="insertUserPosition" parameterType="UserPosition" >
+        insert into user_position (<include refid="insertFields"></include>)
+        values(#{userId}, #{stockId}, #{volume}, #{principalInput})
+    </insert>
+
+    <select id="findUserPositionByUserId" parameterType="Integer" resultType="UserPosition">
+        select <include refid="selectFields"/>
+        where user_id = #{userId}
+    </select>
+</mapper>
