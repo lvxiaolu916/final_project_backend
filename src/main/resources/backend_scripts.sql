@@ -13,8 +13,8 @@ create table stock_trainsaction (
   user_id int NOT NULL,
   volume int DEFAULT NULL,
   trainsaction_status int DEFAULT NULL, -- 1 for sell, 0 for buy
-  create_time timestamp DEFAULT NULL,
-  PRIMARY KEY (stock_id,user_id)
+  create_time timestamp not NULL,
+  PRIMARY KEY (stock_id,user_id,create_time)
 );
 create table real_time_stock (
   stock_id int NOT NULL AUTO_INCREMENT,
