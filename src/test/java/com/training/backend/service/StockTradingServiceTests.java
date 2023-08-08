@@ -23,7 +23,7 @@ public class StockTradingServiceTests {
 
 
     @Test
-    public void TraindingBuyTests() {
+    public void TradingBuyTests() {
 
         Map<String,Object> testMap = new HashMap<>();
 
@@ -37,7 +37,7 @@ public class StockTradingServiceTests {
     }
 
     @Test
-    public void TraindingSellTests() {
+    public void TradingSellTests() {
 
         Map<String,Object> testMap = new HashMap<>();
 

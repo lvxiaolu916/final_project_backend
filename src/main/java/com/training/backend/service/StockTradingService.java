@@ -53,7 +53,10 @@ public class StockTradingService {
         }
         else if (trainsactionStatus == Constant.SELL && userPosition == null)
         {
-            return Constant.USER_POSITION_IS_NULL_WHEN_SELL;
+
+            logger.error("USER_POSITION_IS_NULL_WHEN_SELL");
+            throw new IllegalArgumentException("USER_POSITION_IS_NULL_WHEN_SELL");
+//            return Constant.USER_POSITION_IS_NULL_WHEN_SELL;
         }
         else {
             return Constant.SUCCESS;
