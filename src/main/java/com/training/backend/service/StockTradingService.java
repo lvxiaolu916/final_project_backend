@@ -72,7 +72,6 @@ public class StockTradingService {
             realTimeStockMapper.updateMarginByStockId(realTimeStock.getStockId(), realTimeStock.getStockMargin() + volume);
         }
 
-
     }
 
     private void modifyUserPrincipal(int trainsactionStatus, User user, double totalTransactionPrice) {
