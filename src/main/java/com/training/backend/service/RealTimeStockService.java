@@ -2,6 +2,8 @@ package com.training.backend.service;
 
 import com.training.backend.dao.RealTimeStockMapper;
 import com.training.backend.entity.RealTimeStock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ public class RealTimeStockService {
 
     @Autowired
     private RealTimeStockMapper realTimeStockMapper;
+
+    private static final Logger logger = LoggerFactory.getLogger(StockTradingService.class);
 
     public List<RealTimeStock> findRealTimeStockAll(){
         return realTimeStockMapper.selectRealTimeStockAll();
@@ -33,7 +37,8 @@ public class RealTimeStockService {
             return realTimeStockMapper.updatePriceByStockId(stockId,newPrice);
         }
         else{
-            throw new NoSuchElementException("StockId not found: "+stockId);
+            logger.error("StockId is null");
+            throw new IllegalArgumentException("StockId not found: "+stockId);
         }
     }
 
@@ -44,7 +49,8 @@ public class RealTimeStockService {
             return realTimeStockMapper.updatePriceByStockName(stockName,newPrice);
         }
         else{
-            throw new NoSuchElementException("StockName not found: "+stockName);
+            logger.error("StockName is null");
+            throw new IllegalArgumentException("StockName not found: "+stockName);
         }
     }
 
@@ -55,7 +61,8 @@ public class RealTimeStockService {
             return realTimeStockMapper.updateMarginByStockId(stockId,newMargin);
         }
         else{
-            throw new NoSuchElementException("StockId not found: "+stockId);
+            logger.error("StockId is null");
+            throw new IllegalArgumentException("StockId not found: "+stockId);
         }
     }
 
@@ -66,7 +73,8 @@ public class RealTimeStockService {
             return realTimeStockMapper.updateMarginByStockName(stockName,newMargin);
         }
         else{
-            throw new NoSuchElementException("StockName not found: "+stockName);
+            logger.error("StockName is null");
+            throw new IllegalArgumentException("StockName not found: "+stockName);
         }
     }
 
@@ -77,7 +85,8 @@ public class RealTimeStockService {
             return realTimeStockMapper.updateFluctuationByStockId(stockId,newFluctuation);
         }
         else{
-            throw new NoSuchElementException("StockId not found: "+stockId);
+            logger.error("StockId is null");
+            throw new IllegalArgumentException("StockId not found: "+stockId);
         }
     }
 
@@ -88,7 +97,8 @@ public class RealTimeStockService {
             return realTimeStockMapper.updateFluctuationByStockName(stockName,newFluctuation);
         }
         else{
-            throw new NoSuchElementException("StockName not found: "+stockName);
+            logger.error("StockName is null");
+            throw new IllegalArgumentException("StockName not found: "+stockName);
         }
     }
 

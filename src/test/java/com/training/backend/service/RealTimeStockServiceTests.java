@@ -35,6 +35,11 @@ public class RealTimeStockServiceTests {
     }
 
     @Test
+    public void setPriceByStockNameTest(){
+        Assertions.assertNotEquals(realTimeStockService.setPriceByStockName("abc",7.2),0);
+    }
+
+    @Test
     public void setMarginByStockIdTest(){
         Assertions.assertNotEquals(realTimeStockService.setMarginByStockId(1,20),0);
     }
