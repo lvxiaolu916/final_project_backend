@@ -38,14 +38,10 @@ public class StockTradingService {
 
 
     //Judge whether the basic conditions of the transaction are met
-    private int justTransaction(int trainsactionStatus, double totalTransactionPrice, int volume, double userPrincipal, int stockMargin, UserPosition userPosition) {
+    private int justTransaction(int trainsactionStatus, double totalTransactionPrice, int volume, double userPrincipal, UserPosition userPosition) {
         if (trainsactionStatus == Constant.BUY && totalTransactionPrice > userPrincipal)
         {
             return Constant.USER_NOT_ENOUGH_PRINCIPAL;
-        }
-        else if (trainsactionStatus == Constant.BUY && volume > stockMargin)
-        {
-            return Constant.STOCK_NOT_ENOUGH_VOLUME;
         }
         else if (trainsactionStatus == Constant.SELL && userPosition != null && volume > userPosition.getVolume())
         {
@@ -54,25 +50,15 @@ public class StockTradingService {
         else if (trainsactionStatus == Constant.SELL && userPosition == null)
         {
 
-            logger.error("USER_POSITION_IS_NULL_WHEN_SELL");
-            throw new IllegalArgumentException("USER_POSITION_IS_NULL_WHEN_SELL");
-//            return Constant.USER_POSITION_IS_NULL_WHEN_SELL;
+//            logger.error("USER_POSITION_IS_NULL_WHEN_SELL");
+//            throw new IllegalArgumentException("USER_POSITION_IS_NULL_WHEN_SELL");
+            return Constant.USER_POSITION_IS_NULL_WHEN_SELL;
         }
         else {
             return Constant.SUCCESS;
         }
     }
 
-//    private void modifyRealTimeStockMapper(int trainsacionStatus, RealTimeStock realTimeStock, int volume) {
-//
-//        if (trainsacionStatus == Constant.BUY) {
-//            realTimeStockMapper.updateMarginByStockId(realTimeStock.getStockId(),realTimeStock.getStockMargin() - volume);
-//        }
-//        else {
-//            realTimeStockMapper.updateMarginByStockId(realTimeStock.getStockId(), realTimeStock.getStockMargin() + volume);
-//        }
-//
-//    }
 
     private void modifyUserPrincipal(int trainsactionStatus, User user, double totalTransactionPrice) {
         double currentUserPrincipal = 0;
@@ -86,7 +72,12 @@ public class StockTradingService {
         userMapper.updatePrincipalHoldingsByUserId(user.getUserId(),currentUserPrincipal);
     }
 
-    private void modifyUserPosition (int trainsactinoStatus, int userId, int stockId, UserPosition userPosition, int volume, double totalTransactionPrice) throws IllegalArgumentException{
+    private void modifyUserPosition (StockTrainsaction stockTrainsaction, UserPosition userPosition,  double totalTransactionPrice) {
+
+        int trainsactinoStatus = stockTrainsaction.getTrainsactionStatus();
+        int volume = stockTrainsaction.getVolume();
+        int userId = stockTrainsaction.getUserId();
+        int stockId = stockTrainsaction.getStockId();
 
         if (userPosition != null) {
 
@@ -132,43 +123,28 @@ public class StockTradingService {
         }
     }
 
-    private void createStockTrainsaction(int trainsactionStatus, Date time, int userId, int stockId, int volume) {
-        StockTrainsaction stockTrainsaction = new StockTrainsaction();
-        stockTrainsaction.setTrainsactionStatus(trainsactionStatus);
-        stockTrainsaction.setStockId(stockId);
-        stockTrainsaction.setUserId(userId);
-        stockTrainsaction.setVolume(volume);
-        stockTrainsaction.setCreateTime(time);
-        stockTrainsactionMapper.insertStockTrainsaction(stockTrainsaction);
-    }
 
-    /*
-     * input param: Map<String,Object>
-     * Key:stockId,userId,volume,time,trainsactionStatus
-     * Value data type:int, int, int, Date, int
-     * */
     @Transactional
-    public int stockTrading(Map<String,Object> tradingMap) {
+    public int stockTrading(StockTrainsaction stockTrainsaction) {
 
         //get realTimeStock
-        RealTimeStock realTimeStock = realTimeStockMapper.selectRealTimeStockByStockId((int)tradingMap.get("stockId"));
+        RealTimeStock realTimeStock = realTimeStockMapper.selectRealTimeStockByStockId(stockTrainsaction.getStockId());
 
         //get uer
-        User user = userMapper.selectUserByUserId((int)tradingMap.get("userId"));
+        User user = userMapper.selectUserByUserId(stockTrainsaction.getUserId());
 
         //get userPostiion
-        UserPosition userPosition = userPositionMapper.selectUserPositionByUserIdAndStockId((int)tradingMap.get("userId"),(int)tradingMap.get("stockId"));
+        UserPosition userPosition = userPositionMapper.selectUserPositionByUserIdAndStockId(stockTrainsaction.getUserId(),stockTrainsaction.getStockId());
 
         //get total trainsaction price
-        double totalTransactionPrice = realTimeStock.getCurrentPrice()*(int)tradingMap.get("volume");
+        double totalTransactionPrice = realTimeStock.getCurrentPrice()*stockTrainsaction.getVolume();
 
         //Judge whether normal transactions can be carried out.
         int justRes = justTransaction(
-                (int)tradingMap.get("trainsactionStatus"),
+                stockTrainsaction.getTrainsactionStatus(),
                 totalTransactionPrice,
-                (int)tradingMap.get("volume"),
+                stockTrainsaction.getVolume(),
                 user.getPrincipalHoldings(),
-                realTimeStock.getStockMargin(),
                 userPosition
                 );
 
@@ -177,32 +153,19 @@ public class StockTradingService {
         }
 
         //create stock trainsaction
-        createStockTrainsaction(
-                (int)tradingMap.get("trainsactionStatus"),
-                (Date)tradingMap.get("time"),
-                user.getUserId(),
-                realTimeStock.getStockId(),
-                (int)tradingMap.get("volume"));
+        stockTrainsactionMapper.insertStockTrainsaction(stockTrainsaction);
 
-//        //Modify RealTimeStock
-//        modifyRealTimeStockMapper(
-//                (int)tradingMap.get("trainsactionStatus"),
-//                realTimeStock,
-//                (int)tradingMap.get("volume"));
 
         //Modify User Principal
         modifyUserPrincipal(
-                (int)tradingMap.get("trainsactionStatus"),
+               stockTrainsaction.getTrainsactionStatus(),
                 user,
                 totalTransactionPrice);
 
         //Modify UserPostion
         modifyUserPosition(
-                (int)tradingMap.get("trainsactionStatus"),
-                user.getUserId(),
-                realTimeStock.getStockId(),
+                stockTrainsaction,
                 userPosition,
-                (int)tradingMap.get("volume"),
                 totalTransactionPrice);
 
         return Constant.SUCCESS;

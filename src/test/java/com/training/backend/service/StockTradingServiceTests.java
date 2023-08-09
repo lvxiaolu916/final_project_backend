@@ -1,5 +1,6 @@
 package com.training.backend.service;
 
+import com.training.backend.entity.StockTrainsaction;
 import com.training.backend.utils.Constant;
 import org.junit.After;
 import org.junit.Assert;
@@ -25,29 +26,30 @@ public class StockTradingServiceTests {
     @Test
     public void TradingBuyTests() {
 
-        Map<String,Object> testMap = new HashMap<>();
 
-        testMap.put("trainsactionStatus",Constant.BUY);
-        testMap.put("time",new Date());
-        testMap.put("userId",1);
-        testMap.put("stockId",1);
-        testMap.put("volume",100);
+        StockTrainsaction stockTrainsaction = new StockTrainsaction();
 
-        Assert.assertEquals(stockTradingService.stockTrading(testMap), Constant.SUCCESS);
+        stockTrainsaction.setTrainsactionStatus(Constant.BUY);
+        stockTrainsaction.setStockId(1);
+        stockTrainsaction.setUserId(1);
+        stockTrainsaction.setVolume(100);
+        stockTrainsaction.setCreateTime(new Date());
+
+
+        Assert.assertEquals(stockTradingService.stockTrading(stockTrainsaction), Constant.SUCCESS);
     }
 
     @Test
     public void TradingSellTests() {
 
-        Map<String,Object> testMap = new HashMap<>();
+        StockTrainsaction stockTrainsaction = new StockTrainsaction();
 
-        testMap.put("trainsactionStatus",Constant.SELL);
-        testMap.put("time",new Date());
-        testMap.put("userId",1);
-        testMap.put("stockId",1);
-        testMap.put("volume",100);
-
-        Assert.assertEquals(stockTradingService.stockTrading(testMap), Constant.SUCCESS);
+        stockTrainsaction.setTrainsactionStatus(Constant.SELL);
+        stockTrainsaction.setStockId(1);
+        stockTrainsaction.setUserId(1);
+        stockTrainsaction.setVolume(100);
+        stockTrainsaction.setCreateTime(new Date());
+        Assert.assertEquals(stockTradingService.stockTrading(stockTrainsaction), Constant.SUCCESS);
     }
 
 
