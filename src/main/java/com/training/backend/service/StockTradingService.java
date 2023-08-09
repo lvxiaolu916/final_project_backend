@@ -97,7 +97,7 @@ public class StockTradingService {
                 userPositionTemplete.setVolume(userPosition.getVolume()-volume);
 
                 double rate = (double)(userPosition.getVolume()-volume)/userPosition.getVolume();
-                logger.info("rate is :"+String.valueOf(rate));
+//                logger.info("rate is :"+String.valueOf(rate));
 
                 userPositionTemplete.setPrincipalInput(userPosition.getPrincipalInput()*rate);
 
