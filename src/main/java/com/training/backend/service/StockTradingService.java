@@ -96,8 +96,10 @@ public class StockTradingService {
                 userPositionTemplete.setStockId(stockId);
                 userPositionTemplete.setVolume(userPosition.getVolume()-volume);
 
-                //PrincipalInput only will be changed when buy stock
-                userPositionTemplete.setPrincipalInput(userPosition.getPrincipalInput());
+                double rate = (double)(userPosition.getVolume()-volume)/userPosition.getVolume();
+                logger.info("rate is :"+String.valueOf(rate));
+
+                userPositionTemplete.setPrincipalInput(userPosition.getPrincipalInput()*rate);
 
                 userPositionMapper.updateUserPositionByUserPosition(userPositionTemplete);
             }

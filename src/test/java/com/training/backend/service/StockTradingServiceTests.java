@@ -32,7 +32,7 @@ public class StockTradingServiceTests {
         stockTrainsaction.setTrainsactionStatus(Constant.BUY);
         stockTrainsaction.setStockId(1);
         stockTrainsaction.setUserId(1);
-        stockTrainsaction.setVolume(100);
+        stockTrainsaction.setVolume(200);
         stockTrainsaction.setCreateTime(new Date());
 
 
@@ -47,7 +47,7 @@ public class StockTradingServiceTests {
         stockTrainsaction.setTrainsactionStatus(Constant.SELL);
         stockTrainsaction.setStockId(1);
         stockTrainsaction.setUserId(1);
-        stockTrainsaction.setVolume(100);
+        stockTrainsaction.setVolume(150);
         stockTrainsaction.setCreateTime(new Date());
         Assert.assertEquals(stockTradingService.stockTrading(stockTrainsaction), Constant.SUCCESS);
     }
