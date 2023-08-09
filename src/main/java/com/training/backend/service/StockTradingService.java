@@ -41,16 +41,20 @@ public class StockTradingService {
     private int justTransaction(int trainsactionStatus, double totalTransactionPrice, int volume, double userPrincipal, UserPosition userPosition) {
         if (trainsactionStatus == Constant.BUY && totalTransactionPrice > userPrincipal)
         {
+            logger.error("USER_NOT_ENOUGH_PRINCIPAL");
+
             return Constant.USER_NOT_ENOUGH_PRINCIPAL;
         }
         else if (trainsactionStatus == Constant.SELL && userPosition != null && volume > userPosition.getVolume())
         {
+            logger.error("USER_POSITION_NOT_ENOUGH_VOLUEM");
+
             return Constant.USER_POSITION_NOT_ENOUGH_VOLUEM;
         }
         else if (trainsactionStatus == Constant.SELL && userPosition == null)
         {
 
-//            logger.error("USER_POSITION_IS_NULL_WHEN_SELL");
+            logger.error("USER_POSITION_IS_NULL_WHEN_SELL");
 //            throw new IllegalArgumentException("USER_POSITION_IS_NULL_WHEN_SELL");
             return Constant.USER_POSITION_IS_NULL_WHEN_SELL;
         }
