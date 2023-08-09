@@ -16,7 +16,7 @@ public class RealTimeStockService {
     @Autowired
     private RealTimeStockMapper realTimeStockMapper;
 
-    private static final Logger logger = LoggerFactory.getLogger(RealTimeStockMapper.class);
+    private static final Logger logger = LoggerFactory.getLogger(RealTimeStockService.class);
 
     public List<RealTimeStock> findRealTimeStockAll(){
         return realTimeStockMapper.selectRealTimeStockAll();
