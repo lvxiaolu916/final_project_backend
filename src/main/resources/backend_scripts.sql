@@ -31,3 +31,10 @@ create table user_position (
   principal_input double DEFAULT NULL,
   PRIMARY KEY (user_id, stock_id)
 );
+create table stock_details (
+  stock_id int NOT NULL AUTO_INCREMENT,
+  stock_name varchar(20) NOT NULL,
+  time timestamp not NULL,
+  price double DEFAULT NULL,
+  PRIMARY KEY (stock_id, time)
+);

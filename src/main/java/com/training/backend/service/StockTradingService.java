@@ -63,16 +63,16 @@ public class StockTradingService {
         }
     }
 
-    private void modifyRealTimeStockMapper(int trainsacionStatus, RealTimeStock realTimeStock, int volume) {
-
-        if (trainsacionStatus == Constant.BUY) {
-            realTimeStockMapper.updateMarginByStockId(realTimeStock.getStockId(),realTimeStock.getStockMargin() - volume);
-        }
-        else {
-            realTimeStockMapper.updateMarginByStockId(realTimeStock.getStockId(), realTimeStock.getStockMargin() + volume);
-        }
-
-    }
+//    private void modifyRealTimeStockMapper(int trainsacionStatus, RealTimeStock realTimeStock, int volume) {
+//
+//        if (trainsacionStatus == Constant.BUY) {
+//            realTimeStockMapper.updateMarginByStockId(realTimeStock.getStockId(),realTimeStock.getStockMargin() - volume);
+//        }
+//        else {
+//            realTimeStockMapper.updateMarginByStockId(realTimeStock.getStockId(), realTimeStock.getStockMargin() + volume);
+//        }
+//
+//    }
 
     private void modifyUserPrincipal(int trainsactionStatus, User user, double totalTransactionPrice) {
         double currentUserPrincipal = 0;
@@ -184,11 +184,11 @@ public class StockTradingService {
                 realTimeStock.getStockId(),
                 (int)tradingMap.get("volume"));
 
-        //Modify RealTimeStock
-        modifyRealTimeStockMapper(
-                (int)tradingMap.get("trainsactionStatus"),
-                realTimeStock,
-                (int)tradingMap.get("volume"));
+//        //Modify RealTimeStock
+//        modifyRealTimeStockMapper(
+//                (int)tradingMap.get("trainsactionStatus"),
+//                realTimeStock,
+//                (int)tradingMap.get("volume"));
 
         //Modify User Principal
         modifyUserPrincipal(

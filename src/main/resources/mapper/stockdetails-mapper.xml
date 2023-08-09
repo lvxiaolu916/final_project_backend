@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--注意对应哪个mapper类必须要对应-->
+<mapper namespace="com.training.backend.dao.StockDetailsMapper">
+
+    <!--    这里要和数据库的列名一致，因为是直接查数据库-->
+    <sql id="selectFields">
+        stock_id, stock_name, time, price
+    </sql>
+
+    <sql id="insertFields">
+        stock_id, stock_name, time, price
+    </sql>
+
+    <select id="selectStocksByStockIdAndLimit" resultType="StockDetails">
+        select <include refid="selectFields"></include>
+        from stock_details
+        where stock_id = #{stockId}
+        order by time desc
+        limit #{limit}
+    </select>
+
+    <insert id="insertAStock" parameterType="StockDetails">
+        insert into stock_details (<include refid="insertFields"></include>)
+        values(#{stockId}, #{stockName}, #{time}, #{price})
+    </insert>
+
+    <insert id="insertBatchStocks" parameterType="StockDetails">
+        insert into stock_details (<include refid="insertFields"></include>) values
+        <foreach collection="stockDetailsList" item="item" separator=",">
+            (#{item.stockId}, #{item.stockName}, #{item.time}, #{item.price})
+        </foreach>
+    </insert>
+
+</mapper>
