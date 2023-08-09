@@ -6,6 +6,8 @@ import com.training.backend.dao.UserPositionMapper;
 import com.training.backend.entity.StockTrainsaction;
 import com.training.backend.entity.User;
 import com.training.backend.entity.UserPosition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,17 @@ public class UserService {
     @Autowired
     private StockTrainsactionMapper stockTrainsactionMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     public double findUserPrincipalHoldingsByUserId(int userId){
         User user = userMapper.selectUserByUserId(userId);
-        return user.getPrincipalHoldings();
+        if(user!=null){
+            return user.getPrincipalHoldings();
+        }else{
+            logger.error("user is null");
+            throw new IllegalArgumentException("userId not found: "+userId);
+        }
+
     }
 
     public List<UserPosition> findUserPositionByUserId(int userId){
@@ -34,7 +44,12 @@ public class UserService {
     }
 
     public int setPrincipalHoldingsByUserId(int userId,double principalHoldings){
-        return userMapper.updatePrincipalHoldingsByUserId(userId,principalHoldings);
+        if(userMapper.selectUserByUserId(userId)!=null){
+            return userMapper.updatePrincipalHoldingsByUserId(userId,principalHoldings);
+        }else{
+            logger.error("user is null");
+            throw new IllegalArgumentException("userId not found: "+userId);
+        }
     }
 
     public int addUser(User user){
