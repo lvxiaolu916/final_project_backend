@@ -16,10 +16,11 @@ public class UserPositionMapperTests {
     @Autowired
     private UserPositionMapper userPositionMapper;
 
+
     @Test
     public void insertUserPositionTest(){
         UserPosition userPosition = new UserPosition();
-        userPosition.setUserId(1);
+        userPosition.setUserId(2);
         userPosition.setStockId(1);
         userPosition.setVolume(100);
         userPosition.setPrincipalInput(BigDecimal.valueOf(1000));

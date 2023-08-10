@@ -42,5 +42,4 @@ public class UserMapperTests {
         Assert.assertEquals(userMapper.updatePrincipalHoldingsByUserId(1, BigDecimal.valueOf(102.56)),1);
     }
 
-
 }

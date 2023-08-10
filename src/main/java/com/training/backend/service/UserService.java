@@ -37,12 +37,34 @@ public class UserService {
     }
 
     public List<UserPosition> findUserPositionByUserId(int userId){
-        return userPositionMapper.selectUserPositionListByUserId(userId);
+        List<UserPosition> result = userPositionMapper.selectUserPositionListByUserId(userId);
+        if(result!=null&&result.size()!=0){
+            return result;
+        }else{
+            logger.error("result is null");
+            throw new IllegalArgumentException("userId not found: "+userId);
+        }
+    }
+
+    public UserPosition findUserPositionByUserIdAndStockId(int userId,int stockId){
+        UserPosition userPosition = userPositionMapper.selectUserPositionByUserIdAndStockId(userId,stockId);
+        if(userPosition!=null){
+            return userPosition;
+        }else{
+            logger.error("userPosition is null");
+            throw new IllegalArgumentException("userId and stockId not found: "+userId+" "+stockId);
+        }
     }
 
 
     public List<StockTrainsaction> findStockTrainsactionByUserId(int userId){
-        return stockTrainsactionMapper.selectStockTrainsactionByUserId(userId);
+        List<StockTrainsaction> result = stockTrainsactionMapper.selectStockTrainsactionByUserId(userId);
+        if(result!=null){
+            return result;
+        }else{
+            logger.error("user is null");
+            throw new IllegalArgumentException("userId not found: "+userId);
+        }
     }
 
 

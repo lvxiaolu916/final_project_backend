@@ -26,7 +26,12 @@ public class UserServiceTests {
 
     @Test
     public void findUserPositionByUserIdTest(){
-        Assert.assertNotNull(userService.findUserPositionByUserId(3));
+        Assert.assertNotNull(userService.findUserPositionByUserId(1));
+    }
+
+    @Test
+    public void findUserPositionByUserIdAndStockIdTest(){
+        Assert.assertNotNull(userService.findUserPositionByUserIdAndStockId(1,1));
     }
 
     @Test
@@ -39,7 +44,7 @@ public class UserServiceTests {
         Assert.assertEquals(1,userService.setPrincipalHoldingsByUserId(1,BigDecimal.valueOf(9000)));
     }
 
-//    @Ignore
+    @Ignore
     @Test
     public void addUser(){
         User user = new User();
