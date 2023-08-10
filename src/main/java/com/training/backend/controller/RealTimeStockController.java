@@ -36,7 +36,7 @@ public class RealTimeStockController {
             BigDecimal lastPrice = stockDetails.get(1).getPrice();
 
             //maybe fluctuation can be found in table RealTimeStock
-            BigDecimal priceFluctuation = stockDetails.size() == 1 ?  currentPrice.subtract(lastPrice)  : stockDetails.get(0).getPrice();
+            BigDecimal priceFluctuation = stockDetails.size() == 1 ?  currentPrice.subtract(lastPrice)  : currentPrice;
             BigDecimal fluctuationRate = priceFluctuation.divide(lastPrice, RoundingMode.HALF_UP);
 
             Market market = new Market();
@@ -44,6 +44,7 @@ public class RealTimeStockController {
             market.setStockName(r.getStockName());
             market.setCurrentPrice(r.getCurrentPrice());
             market.setPriceFluctuation(priceFluctuation);
+            market.setFluctuationRate(fluctuationRate);
 
             result.add(market);
         }

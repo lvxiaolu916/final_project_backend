@@ -6,9 +6,7 @@ import com.training.backend.entity.UserPosition;
 import com.training.backend.service.RealTimeStockService;
 import com.training.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,13 +21,13 @@ public class UserController {
     @Autowired
     private RealTimeStockService realTimeStockService;
 
-    @GetMapping("/getUserPrincipleHoldings")
-    public BigDecimal getUserPrincipleHoldings(int userId){
+    @GetMapping("/getUserPrincipleHoldings/{userId}")
+    public BigDecimal getUserPrincipleHoldings(@PathVariable int userId){
         return userService.findUserPrincipalHoldingsByUserId(userId);
     }
 
-    @GetMapping("/getPortfolioList")
-    public List<Portfolio> getPortfolioList(int userId){
+    @GetMapping("/getPortfolioList/{userId}")
+    public List<Portfolio> getPortfolioList(@PathVariable int userId){
         //store all portfolio
         List<Portfolio> result = new ArrayList<>();
         //get stockId
