@@ -5,7 +5,7 @@ create table user (
   user_id int NOT NULL AUTO_INCREMENT,
   user_name varchar(20) DEFAULT NULL,
   user_sex varchar(20) DEFAULT NULL,
-  principal_holdings double DEFAULT NULL,
+  principal_holdings decimal(18,2) DEFAULT NULL,
   primary key (user_id)
 );
 create table stock_trainsaction (
@@ -19,22 +19,22 @@ create table stock_trainsaction (
 create table real_time_stock (
   stock_id int NOT NULL AUTO_INCREMENT,
   stock_name varchar(20) NOT NULL,
-  current_price double DEFAULT NULL,
+  current_price decimal(18,2) DEFAULT NULL,
   stock_margin int DEFAULT NULL,
-  fluctuation double DEFAULT NULL,
+  fluctuation decimal(18,2) DEFAULT NULL,
   PRIMARY KEY (stock_id)
 );
 create table user_position (
   user_id int NOT NULL,
   stock_id int NOT NULL,
   volume int DEFAULT NULL,
-  principal_input double DEFAULT NULL,
+  principal_input decimal(18,2) DEFAULT NULL,
   PRIMARY KEY (user_id, stock_id)
 );
 create table stock_details (
   stock_id int NOT NULL AUTO_INCREMENT,
   stock_name varchar(20) NOT NULL,
   time timestamp not NULL,
-  price double DEFAULT NULL,
+  price decimal(18,2) DEFAULT NULL,
   PRIMARY KEY (stock_id, time)
 );
