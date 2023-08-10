@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -30,7 +31,7 @@ public class RealTimeStockService {
         return realTimeStockMapper.selectRealTimeStockByStockName(stockName);
     }
     
-    public int setPriceByStockId(int stockId, double newPrice){
+    public int setPriceByStockId(int stockId, BigDecimal newPrice){
         RealTimeStock currealTimeStock = realTimeStockMapper.selectRealTimeStockByStockId(stockId);
         
         if(currealTimeStock!=null){
@@ -42,7 +43,7 @@ public class RealTimeStockService {
         }
     }
 
-    public int setPriceByStockName(String stockName, double newPrice){
+    public int setPriceByStockName(String stockName, BigDecimal newPrice){
         RealTimeStock currealTimeStock = realTimeStockMapper.selectRealTimeStockByStockName(stockName);
 
         if(currealTimeStock!=null){
@@ -78,7 +79,7 @@ public class RealTimeStockService {
         }
     }
 
-    public int setFluctuationByStockId(int stockId, double newFluctuation){
+    public int setFluctuationByStockId(int stockId, BigDecimal newFluctuation){
         RealTimeStock currealTimeStock = realTimeStockMapper.selectRealTimeStockByStockId(stockId);
 
         if(currealTimeStock!=null){
@@ -90,7 +91,7 @@ public class RealTimeStockService {
         }
     }
 
-    public int setFluctuationByStockName(String stockName, double newFluctuation){
+    public int setFluctuationByStockName(String stockName, BigDecimal newFluctuation){
         RealTimeStock currealTimeStock = realTimeStockMapper.selectRealTimeStockByStockName(stockName);
 
         if(currealTimeStock!=null){

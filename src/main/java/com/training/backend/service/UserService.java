@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -24,7 +25,7 @@ public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    public double findUserPrincipalHoldingsByUserId(int userId){
+    public BigDecimal findUserPrincipalHoldingsByUserId(int userId){
         User user = userMapper.selectUserByUserId(userId);
         if(user!=null){
             return user.getPrincipalHoldings();
@@ -43,7 +44,7 @@ public class UserService {
         return stockTrainsactionMapper.selectStockTrainsactionByUserId(userId);
     }
 
-    public int setPrincipalHoldingsByUserId(int userId,double principalHoldings){
+    public int setPrincipalHoldingsByUserId(int userId,BigDecimal principalHoldings){
         if(userMapper.selectUserByUserId(userId)!=null){
             return userMapper.updatePrincipalHoldingsByUserId(userId,principalHoldings);
         }else{

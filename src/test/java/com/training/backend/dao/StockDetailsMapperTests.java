@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,7 @@ public class StockDetailsMapperTests {
         stockDetails.setStockId(1);
         stockDetails.setStockName("test1");
         stockDetails.setTime(new Date());
-        stockDetails.setPrice(600);
+        stockDetails.setPrice(BigDecimal.valueOf(600));
         stockDetailsMapper.insertAStock(stockDetails);
     }
 
@@ -39,13 +40,13 @@ public class StockDetailsMapperTests {
         stockDetails.setStockId(1);
         stockDetails.setStockName("test1");
         stockDetails.setTime(new Date());
-        stockDetails.setPrice(600);
+        stockDetails.setPrice(BigDecimal.valueOf(600));
 
         StockDetails stockDetails1 = new StockDetails();
         stockDetails1.setStockId(2);
         stockDetails1.setStockName("test2");
         stockDetails1.setTime(new Date());
-        stockDetails1.setPrice(300);
+        stockDetails1.setPrice(BigDecimal.valueOf(300));
 
         list.add(stockDetails);
         list.add(stockDetails1);

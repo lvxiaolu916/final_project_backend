@@ -3,6 +3,7 @@ package com.training.backend.dao;
 import com.training.backend.entity.RealTimeStock;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -15,17 +16,17 @@ public interface RealTimeStockMapper {
 
 	RealTimeStock selectRealTimeStockByStockName(String stockName);
 	
-	int updatePriceByStockId(int stockId, double currentPrice);
+	int updatePriceByStockId(int stockId, BigDecimal currentPrice);
 	
-	int updatePriceByStockName(String stockName, double currentPrice);
+	int updatePriceByStockName(String stockName, BigDecimal currentPrice);
 	
     int updateMarginByStockId(int stockId, int stockMargin);
 	
 	int updateMarginByStockName(String stockName, int stockMargin);
 	
-    int updateFluctuationByStockId(int stockId, double fluctuation);
+    int updateFluctuationByStockId(int stockId, BigDecimal fluctuation);
 	
-	int updateFluctuationByStockName(String stockName, double fluctuation);
+	int updateFluctuationByStockName(String stockName, BigDecimal fluctuation);
 	
 
 }

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.crypto.Data;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Map;
 
@@ -38,8 +40,8 @@ public class StockTradingService {
 
 
     //Judge whether the basic conditions of the transaction are met
-    private int justTransaction(int trainsactionStatus, double totalTransactionPrice, int volume, double userPrincipal, UserPosition userPosition) {
-        if (trainsactionStatus == Constant.BUY && totalTransactionPrice > userPrincipal)
+    private int justTransaction(int trainsactionStatus, BigDecimal totalTransactionPrice, int volume, BigDecimal userPrincipal, UserPosition userPosition) {
+        if (trainsactionStatus == Constant.BUY && totalTransactionPrice.compareTo(userPrincipal) == 1)
         {
             logger.error("USER_NOT_ENOUGH_PRINCIPAL");
 
@@ -64,19 +66,19 @@ public class StockTradingService {
     }
 
 
-    private void modifyUserPrincipal(int trainsactionStatus, User user, double totalTransactionPrice) {
-        double currentUserPrincipal = 0;
+    private void modifyUserPrincipal(int trainsactionStatus, User user, BigDecimal totalTransactionPrice) {
+        BigDecimal currentUserPrincipal = BigDecimal.valueOf(0);
 
         if (trainsactionStatus == Constant.BUY) {
-            currentUserPrincipal = user.getPrincipalHoldings()-totalTransactionPrice;
+            currentUserPrincipal = user.getPrincipalHoldings().subtract(totalTransactionPrice);
         }
         else {
-            currentUserPrincipal = user.getPrincipalHoldings()+totalTransactionPrice;
+            currentUserPrincipal = user.getPrincipalHoldings().add(totalTransactionPrice);
         }
         userMapper.updatePrincipalHoldingsByUserId(user.getUserId(),currentUserPrincipal);
     }
 
-    private void modifyUserPosition (StockTrainsaction stockTrainsaction, UserPosition userPosition,  double totalTransactionPrice) {
+    private void modifyUserPosition (StockTrainsaction stockTrainsaction, UserPosition userPosition,  BigDecimal totalTransactionPrice) {
 
         int trainsactinoStatus = stockTrainsaction.getTrainsactionStatus();
         int volume = stockTrainsaction.getVolume();
@@ -96,10 +98,10 @@ public class StockTradingService {
                 userPositionTemplete.setStockId(stockId);
                 userPositionTemplete.setVolume(userPosition.getVolume()-volume);
 
-                double rate = (double)(userPosition.getVolume()-volume)/userPosition.getVolume();
+                BigDecimal rate = (BigDecimal.valueOf(userPosition.getVolume()).subtract(BigDecimal.valueOf(volume))).divide(BigDecimal.valueOf(userPosition.getVolume()), RoundingMode.HALF_UP);
 //                logger.info("rate is :"+String.valueOf(rate));
 
-                userPositionTemplete.setPrincipalInput(userPosition.getPrincipalInput()*rate);
+                userPositionTemplete.setPrincipalInput(userPosition.getPrincipalInput().multiply(rate));
 
                 userPositionMapper.updateUserPositionByUserPosition(userPositionTemplete);
             }
@@ -111,7 +113,7 @@ public class StockTradingService {
                 userPositionTemplete.setVolume(userPosition.getVolume()+volume);
 
                 //PrincipalInput only will be changed when buy stock
-                userPositionTemplete.setPrincipalInput(userPosition.getPrincipalInput()+totalTransactionPrice);
+                userPositionTemplete.setPrincipalInput(userPosition.getPrincipalInput().add(totalTransactionPrice));
                 userPositionMapper.updateUserPositionByUserPosition(userPositionTemplete);
             }
 
@@ -143,7 +145,7 @@ public class StockTradingService {
         UserPosition userPosition = userPositionMapper.selectUserPositionByUserIdAndStockId(stockTrainsaction.getUserId(),stockTrainsaction.getStockId());
 
         //get total trainsaction price
-        double totalTransactionPrice = realTimeStock.getCurrentPrice()*stockTrainsaction.getVolume();
+        BigDecimal totalTransactionPrice = realTimeStock.getCurrentPrice().multiply(BigDecimal.valueOf(stockTrainsaction.getVolume()));
 
         //Judge whether normal transactions can be carried out.
         int justRes = justTransaction(

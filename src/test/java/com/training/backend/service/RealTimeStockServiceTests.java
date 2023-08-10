@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class RealTimeStockServiceTests {
@@ -31,12 +33,12 @@ public class RealTimeStockServiceTests {
 
     @Test
     public void setPriceByStockIdTest(){
-        Assertions.assertNotEquals(realTimeStockService.setPriceByStockId(1,12.2),0);
+        Assertions.assertNotEquals(realTimeStockService.setPriceByStockId(1, BigDecimal.valueOf(12.2)),0);
     }
 
     @Test
     public void setPriceByStockNameTest(){
-        Assertions.assertNotEquals(realTimeStockService.setPriceByStockName("abc",7.2),0);
+        Assertions.assertNotEquals(realTimeStockService.setPriceByStockName("abc",BigDecimal.valueOf(7.2)),0);
     }
 
     @Test
@@ -51,12 +53,12 @@ public class RealTimeStockServiceTests {
 
     @Test
     public void setFluctuationByStockIdTest(){
-        Assertions.assertNotEquals(realTimeStockService.setFluctuationByStockId(1,2.2),0);
+        Assertions.assertNotEquals(realTimeStockService.setFluctuationByStockId(1,BigDecimal.valueOf(2.2)),0);
     }
 
     @Test
     public void setFluctuationByStockNameTest(){
-        Assertions.assertNotEquals(realTimeStockService.setFluctuationByStockName("abc",1.1),0);
+        Assertions.assertNotEquals(realTimeStockService.setFluctuationByStockName("abc",BigDecimal.valueOf(1.1)),0);
     }
 
 }

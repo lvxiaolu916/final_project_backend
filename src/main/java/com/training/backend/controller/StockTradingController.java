@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,14 +47,15 @@ public class StockTradingController {
 
     @RequestMapping(path = "/trading", method = RequestMethod.POST)
     @ResponseBody
-    Map<String, Double> stockTrading(@RequestBody List<StockTrainsaction> tradeList){
+    Map<String, BigDecimal> stockTrading(@RequestBody List<StockTrainsaction> tradeList){
+
+        int resStatus = 0;
 
         //need to get total value, and benefit from
-
-        double initalUserPrincipal = userService.findUserPrincipalHoldingsByUserId(1);
-        double finalUserPrincipal = 0;
-        double totalValue = 0;
-        double benefit = 0;
+        BigDecimal initalUserPrincipal = userService.findUserPrincipalHoldingsByUserId(1);
+        BigDecimal finalUserPrincipal = BigDecimal.valueOf(0);
+        BigDecimal totalValue = BigDecimal.valueOf(0);
+        BigDecimal benefit = BigDecimal.valueOf(0);
 
 
         List<UserPosition> userPositionList = userService.findUserPositionByUserId(1);
@@ -63,18 +66,28 @@ public class StockTradingController {
             UserPosition specifyUserPosition = findSpecifyUserPosition(userPositionList, item.getUserId(), item.getStockId());
 
             if (item.getTrainsactionStatus() == Constant.SELL) {
-                benefit += item.getVolume() * realTimeStockService.findRealTimeStockByStockId(item.getStockId()).getCurrentPrice() -
-                        specifyUserPosition.getPrincipalInput() * ((double) item.getVolume() / specifyUserPosition.getVolume());
+                benefit.add(
+                        BigDecimal.valueOf(item.getVolume()).multiply(
+                                 realTimeStockService.findRealTimeStockByStockId(item.getStockId()).getCurrentPrice()).subtract(
+                        specifyUserPosition.getPrincipalInput().multiply(
+                                BigDecimal.valueOf(item.getVolume()).divide(
+                                        BigDecimal.valueOf(specifyUserPosition.getVolume()),
+                                        RoundingMode.HALF_UP
+                                )
+                        )
+                        )
+                );
             }
 
-            stockTradingService.stockTrading(item);
+            resStatus = stockTradingService.stockTrading(item);
+
 
         }
 
         finalUserPrincipal = userService.findUserPrincipalHoldingsByUserId(1);
-        totalValue = finalUserPrincipal - initalUserPrincipal;
+        totalValue = finalUserPrincipal.subtract(initalUserPrincipal);
 
-        Map<String, Double> resMap = new HashMap<>();
+        Map<String, BigDecimal> resMap = new HashMap<>();
         resMap.put("totalValue", totalValue);
         resMap.put("benefit", benefit);
 

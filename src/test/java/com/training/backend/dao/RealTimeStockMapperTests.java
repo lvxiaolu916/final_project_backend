@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class RealTimeStockMapperTests {
@@ -26,39 +28,39 @@ public class RealTimeStockMapperTests {
 
         realTimeStock.setStockId(1);
         realTimeStock.setStockName("test1");
-        realTimeStock.setCurrentPrice(5.1);
+        realTimeStock.setCurrentPrice(BigDecimal.valueOf(5.1));
 //        realTimeStock.setStockMargin(40045);
-        realTimeStock.setFluctuation(-0.6);
+        realTimeStock.setFluctuation(BigDecimal.valueOf(-0.6));
         realTimeStockMapper.insertRealTimeStock(realTimeStock);
 
 
         realTimeStock.setStockId(2);
         realTimeStock.setStockName("test2");
-        realTimeStock.setCurrentPrice(7.1);
+        realTimeStock.setCurrentPrice(BigDecimal.valueOf(7.1));
 //        realTimeStock.setStockMargin(60045);
-        realTimeStock.setFluctuation(1.2);
+        realTimeStock.setFluctuation(BigDecimal.valueOf(1.2));
         realTimeStockMapper.insertRealTimeStock(realTimeStock);
 
 //        Assert.assertEquals(realTimeStockMapper.insertRealTimeStock(realTimeStock),1);
         realTimeStock.setStockId(3);
         realTimeStock.setStockName("test3");
-        realTimeStock.setCurrentPrice(6.1);
+        realTimeStock.setCurrentPrice(BigDecimal.valueOf(6.1));
 //        realTimeStock.setStockMargin(64145);
-        realTimeStock.setFluctuation(1.8);
+        realTimeStock.setFluctuation(BigDecimal.valueOf(1.8));
         realTimeStockMapper.insertRealTimeStock(realTimeStock);
 
         realTimeStock.setStockId(4);
         realTimeStock.setStockName("test4");
-        realTimeStock.setCurrentPrice(3.5);
+        realTimeStock.setCurrentPrice(BigDecimal.valueOf(3.5));
 //        realTimeStock.setStockMargin(20035);
-        realTimeStock.setFluctuation(-4.6);
+        realTimeStock.setFluctuation(BigDecimal.valueOf(-4.6));
         realTimeStockMapper.insertRealTimeStock(realTimeStock);
 
         realTimeStock.setStockId(5);
         realTimeStock.setStockName("test5");
-        realTimeStock.setCurrentPrice(17.1);
+        realTimeStock.setCurrentPrice(BigDecimal.valueOf(17.1));
 //        realTimeStock.setStockMargin(95357);
-        realTimeStock.setFluctuation(-1.2);
+        realTimeStock.setFluctuation(BigDecimal.valueOf(-1.2));
         realTimeStockMapper.insertRealTimeStock(realTimeStock);
     }
 
@@ -79,12 +81,12 @@ public class RealTimeStockMapperTests {
 
     @Test
     public void updatePriceByStockIdTest(){
-        Assertions.assertNotEquals(realTimeStockMapper.updatePriceByStockId(1,20.3),0);
+        Assertions.assertNotEquals(realTimeStockMapper.updatePriceByStockId(1,BigDecimal.valueOf(20.3)),0);
     }
 
     @Test
     public void updatePriceByStockNameTest(){
-        Assertions.assertNotEquals(realTimeStockMapper.updatePriceByStockName("abc",15.3),0);
+        Assertions.assertNotEquals(realTimeStockMapper.updatePriceByStockName("abc",BigDecimal.valueOf(15.3)),0);
     }
 
     @Test
@@ -99,12 +101,12 @@ public class RealTimeStockMapperTests {
 
     @Test
     public void updateFluctuationByStockIdTest(){
-        Assertions.assertNotEquals(realTimeStockMapper.updateFluctuationByStockId(1,4.3),0);
+        Assertions.assertNotEquals(realTimeStockMapper.updateFluctuationByStockId(1,BigDecimal.valueOf(4.3)),0);
     }
 
     @Test
     public void updateFluctuationByStockNameTest(){
-        Assertions.assertNotEquals(realTimeStockMapper.updateFluctuationByStockName("abc",2.1),0);
+        Assertions.assertNotEquals(realTimeStockMapper.updateFluctuationByStockName("abc",BigDecimal.valueOf(2.1)),0);
     }
 
 }

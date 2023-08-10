@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class UserMapperTests {
@@ -25,7 +27,7 @@ public class UserMapperTests {
         user.setUserId(1);
         user.setUserName("jingkai");
         user.setUserSex("male");
-        user.setPrincipalHoldings(10000);
+        user.setPrincipalHoldings(BigDecimal.valueOf(10000));
 
         Assert.assertEquals(userMapper.insertUser(user),1);
     }
@@ -37,7 +39,7 @@ public class UserMapperTests {
 
     @Test
     public void updatePrincipalHoldingsByUserIdTest() {
-        Assert.assertEquals(userMapper.updatePrincipalHoldingsByUserId(1, 102.56),1);
+        Assert.assertEquals(userMapper.updatePrincipalHoldingsByUserId(1, BigDecimal.valueOf(102.56)),1);
     }
 
 

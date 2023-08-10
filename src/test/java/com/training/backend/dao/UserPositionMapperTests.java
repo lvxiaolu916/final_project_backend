@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
+
 @SpringBootTest(classes = BackendApplication.class)
 public class UserPositionMapperTests {
     @Autowired
@@ -20,7 +22,7 @@ public class UserPositionMapperTests {
         userPosition.setUserId(1);
         userPosition.setStockId(1);
         userPosition.setVolume(100);
-        userPosition.setPrincipalInput(1000);
+        userPosition.setPrincipalInput(BigDecimal.valueOf(1000));
         Assertions.assertEquals(1,userPositionMapper.insertUserPosition(userPosition));
     }
 
@@ -40,7 +42,7 @@ public class UserPositionMapperTests {
         userPosition.setUserId(1);
         userPosition.setStockId(1);
         userPosition.setVolume(1000);
-        userPosition.setPrincipalInput(10000);
+        userPosition.setPrincipalInput(BigDecimal.valueOf(10000));
         Assertions.assertEquals(1,userPositionMapper.updateUserPositionByUserPosition(userPosition));
     }
 
