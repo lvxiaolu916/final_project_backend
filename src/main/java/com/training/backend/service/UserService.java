@@ -40,9 +40,11 @@ public class UserService {
         return userPositionMapper.selectUserPositionListByUserId(userId);
     }
 
+
     public List<StockTrainsaction> findStockTrainsactionByUserId(int userId){
         return stockTrainsactionMapper.selectStockTrainsactionByUserId(userId);
     }
+
 
     public int setPrincipalHoldingsByUserId(int userId,BigDecimal principalHoldings){
         if(userMapper.selectUserByUserId(userId)!=null){

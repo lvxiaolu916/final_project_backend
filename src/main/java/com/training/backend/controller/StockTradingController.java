@@ -47,9 +47,9 @@ public class StockTradingController {
 
     @RequestMapping(path = "/trading", method = RequestMethod.POST)
     @ResponseBody
-    Map<String, BigDecimal> stockTrading(@RequestBody List<StockTrainsaction> tradeList){
+    Map<String, String> stockTrading(@RequestBody List<StockTrainsaction> tradeList){
 
-        int resStatus = 0;
+        int resStatus = Constant.SUCCESS;
 
         //need to get total value, and benefit from
         BigDecimal initalUserPrincipal = userService.findUserPrincipalHoldingsByUserId(1);
@@ -66,12 +66,27 @@ public class StockTradingController {
             UserPosition specifyUserPosition = findSpecifyUserPosition(userPositionList, item.getUserId(), item.getStockId());
 
             if (item.getTrainsactionStatus() == Constant.SELL) {
-                benefit.add(
+
+//                BigDecimal currentValue = BigDecimal.valueOf(item.getVolume()).multiply(realTimeStockService.findRealTimeStockByStockId(item.getStockId()).getCurrentPrice());
+//                BigDecimal oldValue =specifyUserPosition.getPrincipalInput().multiply(
+//                        (BigDecimal.valueOf(item.getVolume()).divide(
+//                                BigDecimal.valueOf(specifyUserPosition.getVolume()) ,3, RoundingMode.HALF_UP)
+//
+//                        ));
+//
+//                System.out.println(currentValue);
+//                System.out.println(oldValue);
+//
+//                benefit = benefit.add(currentValue.subtract(oldValue));
+//                System.out.println(benefit);
+
+
+                benefit = benefit.add(
                         BigDecimal.valueOf(item.getVolume()).multiply(
                                  realTimeStockService.findRealTimeStockByStockId(item.getStockId()).getCurrentPrice()).subtract(
                         specifyUserPosition.getPrincipalInput().multiply(
                                 BigDecimal.valueOf(item.getVolume()).divide(
-                                        BigDecimal.valueOf(specifyUserPosition.getVolume()),
+                                        BigDecimal.valueOf(specifyUserPosition.getVolume()),6,
                                         RoundingMode.HALF_UP
                                 )
                         )
@@ -81,15 +96,31 @@ public class StockTradingController {
 
             resStatus = stockTradingService.stockTrading(item);
 
-
+            if (resStatus != Constant.SUCCESS) {
+                break;
+            }
         }
 
         finalUserPrincipal = userService.findUserPrincipalHoldingsByUserId(1);
         totalValue = finalUserPrincipal.subtract(initalUserPrincipal);
 
-        Map<String, BigDecimal> resMap = new HashMap<>();
-        resMap.put("totalValue", totalValue);
-        resMap.put("benefit", benefit);
+        Map<String, String> resMap = new HashMap<>();
+        resMap.put("totalValue", totalValue.toString());
+        resMap.put("benefit", benefit.setScale(2,RoundingMode.HALF_UP).toString());
+
+        if (resStatus == Constant.SUCCESS){
+            resMap.put("status","SUCCESS");
+        }
+        else if (resStatus == Constant.USER_NOT_ENOUGH_PRINCIPAL){
+            resMap.put("status","USER_NOT_ENOUGH_PRINCIPAL");
+        }
+        else if (resStatus == Constant.USER_POSITION_IS_NULL_WHEN_SELL){
+            resMap.put("status","USER_POSITION_IS_NULL_WHEN_SELL");
+        }else {
+            resMap.put("status","USER_POSITION_NOT_ENOUGH_VOLUEM");
+        }
+
+
 
         return resMap;
 

@@ -31,7 +31,7 @@ public class TimedDataInsertionTask {
     @Autowired
     //线程池
     private ThreadPoolExecutor executor;
-    @Scheduled(cron = "0/20 * * * * ?") //每隔20秒执行一次
+    @Scheduled(cron = "0/10 * * * * ?") //每隔20秒执行一次
     public void  addList(){
 
         logger.debug("task has been triggered");
@@ -62,7 +62,7 @@ public class TimedDataInsertionTask {
                 else {
                     BigDecimal oldPrice = realTimeStockMapper.selectRealTimeStockByStockId(stockId).getCurrentPrice();
                     realTimeStockMapper.updatePriceByStockId(stockId,currentPrice);
-                    realTimeStockMapper.updateFluctuationByStockId(stockId,(currentPrice.subtract(oldPrice)).divide(oldPrice, RoundingMode.HALF_UP));
+                    realTimeStockMapper.updateFluctuationByStockId(stockId,(currentPrice.subtract(oldPrice)).divide(oldPrice, 6,RoundingMode.HALF_UP).setScale(2,RoundingMode.HALF_UP));
                 }
 
                 stockDetailsList.add(stockDetails);

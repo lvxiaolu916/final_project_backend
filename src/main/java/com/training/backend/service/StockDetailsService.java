@@ -17,7 +17,7 @@ public class StockDetailsService {
     private StockDetailsMapper stockDetailsMapper;
 
 
-    public List<StockDetails> findUserPositionByUserId(int stockId, int limit){
+    public List<StockDetails> findStockDetailsByUserId(int stockId, int limit){
         return stockDetailsMapper.selectStocksByStockIdAndLimit(stockId,limit);
     }
 

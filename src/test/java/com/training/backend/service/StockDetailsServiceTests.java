@@ -58,6 +58,11 @@ public class StockDetailsServiceTests {
     @Test
     public void selectStocksByStockIdAndLimitTest() {
 
-        Assert.assertNotEquals(null,stockDetailsService.findUserPositionByUserId(1,1));
+        List<StockDetails> stockDetailsList = stockDetailsService.findStockDetailsByUserId(1,2);
+        for (StockDetails stockDetails : stockDetailsList) {
+            System.out.println(stockDetails.getTime() +" "+stockDetails.getPrice());
+        }
+
+        Assert.assertNotEquals(null,stockDetailsService.findStockDetailsByUserId(1,1));
     }
 }
