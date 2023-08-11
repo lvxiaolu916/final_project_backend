@@ -29,6 +29,8 @@ public class RealTimeStockController {
         List<Market> result = new ArrayList<>();
         //get stockId,stockName,currentPrice
         List<RealTimeStock> realTimeStockAll = realTimeStockService.findRealTimeStockAll();
+
+
         for(RealTimeStock r : realTimeStockAll){
             //find the last 2 records about this stock
             List<StockDetails> stockDetails = stockDetailsService.findStockDetailsByUserId(r.getStockId(),2);

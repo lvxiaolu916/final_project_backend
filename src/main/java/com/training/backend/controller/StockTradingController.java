@@ -67,19 +67,6 @@ public class StockTradingController {
 
             if (item.getTrainsactionStatus() == Constant.SELL) {
 
-//                BigDecimal currentValue = BigDecimal.valueOf(item.getVolume()).multiply(realTimeStockService.findRealTimeStockByStockId(item.getStockId()).getCurrentPrice());
-//                BigDecimal oldValue =specifyUserPosition.getPrincipalInput().multiply(
-//                        (BigDecimal.valueOf(item.getVolume()).divide(
-//                                BigDecimal.valueOf(specifyUserPosition.getVolume()) ,3, RoundingMode.HALF_UP)
-//
-//                        ));
-//
-//                System.out.println(currentValue);
-//                System.out.println(oldValue);
-//
-//                benefit = benefit.add(currentValue.subtract(oldValue));
-//                System.out.println(benefit);
-
 
                 benefit = benefit.add(
                         BigDecimal.valueOf(item.getVolume()).multiply(
@@ -119,8 +106,6 @@ public class StockTradingController {
         }else {
             resMap.put("status","USER_POSITION_NOT_ENOUGH_VOLUEM");
         }
-
-
 
         return resMap;
 
