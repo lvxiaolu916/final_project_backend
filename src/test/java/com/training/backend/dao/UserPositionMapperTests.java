@@ -23,7 +23,7 @@ public class UserPositionMapperTests {
         userPosition.setUserId(2);
         userPosition.setStockId(1);
         userPosition.setVolume(100);
-        userPosition.setPrincipalInput(BigDecimal.valueOf(1000));
+        userPosition.setPrincipalInput(BigDecimal.valueOf(100000));
         Assertions.assertEquals(1,userPositionMapper.insertUserPosition(userPosition));
     }
 

@@ -1,0 +1,92 @@
+package com.training.backend.controller;
+
+import com.training.backend.entity.RealTimeStock;
+import com.training.backend.entity.SingleStockDetail;
+import com.training.backend.entity.StockDetails;
+import com.training.backend.entity.UserPosition;
+import com.training.backend.service.RealTimeStockService;
+import com.training.backend.service.StockDetailsService;
+import com.training.backend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/stock-detail")
+public class StockDetailController {
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    StockDetailsService stockDetailsService;
+
+    @Autowired
+    RealTimeStockService realTimeStockService;
+
+    @GetMapping("/getSingleStockDetail/{stockId}")
+    public SingleStockDetail getSingleStockDetail(int userId, int stockId){
+
+        //stockVolume and principalInput
+        UserPosition userPosition = userService.findUserPositionByUserIdAndStockId(1,stockId);
+        int stockVolume = userPosition.getVolume();
+        BigDecimal principalInput = userPosition.getPrincipalInput();
+
+
+        List<StockDetails> list = stockDetailsService.findStockDetailsByUserId(stockId,7);
+
+        //fluctuationRate and fluctuationPrice
+        BigDecimal newPrice = list.get(0).getPrice();
+        BigDecimal oldPrice = list.get(1).getPrice();
+        BigDecimal fluctuationRate = realTimeStockService.findRealTimeStockByStockId(stockId).getFluctuation();
+        BigDecimal fluctuationPrice = fluctuationRate.multiply(oldPrice);
+
+        //maxPrice and minPrice
+        BigDecimal maxPrice = BigDecimal.valueOf(Double.MIN_VALUE);
+        BigDecimal minPrice = BigDecimal.valueOf(Double.MAX_VALUE);
+
+        for (StockDetails stockDetails : list) {
+                BigDecimal curPrice = stockDetails.getPrice();
+            if (curPrice.compareTo(maxPrice) > 0) {
+                maxPrice = curPrice;
+            }
+            if (curPrice.compareTo(minPrice) < 0) {
+                minPrice = curPrice;
+            }
+        }
+
+        //currentInterestRate
+        BigDecimal currentInterestRate = ((newPrice.multiply(BigDecimal.valueOf(stockVolume))).subtract(principalInput))
+                                         .divide(principalInput, 6,RoundingMode.HALF_UP);
+
+        SingleStockDetail singleStockDetail = new SingleStockDetail();
+        singleStockDetail.setFluctuationPrice(fluctuationPrice);
+        singleStockDetail.setFluctuationRate(fluctuationRate);
+        singleStockDetail.setMaxPrice(maxPrice);
+        singleStockDetail.setMinPrice(minPrice);
+        singleStockDetail.setHoldingVolume(stockVolume);
+        singleStockDetail.setCurrentPrice(newPrice);
+        singleStockDetail.setCurrentInterestRate(currentInterestRate);
+
+        return singleStockDetail;
+    }
+
+    @GetMapping("/getWeeklyTrendDetails/{stockId}")
+    public List<BigDecimal> getWeeklyTrendDetails(int stockId){
+        List<StockDetails> list2 = stockDetailsService.findStockDetailsByUserId(stockId,7);
+
+        int count=0;
+        List<BigDecimal> result = new ArrayList<>();
+        while(count<list2.size()){
+            result.add(list2.get(count).getPrice());
+            count++;
+        }
+        return result;
+    }
+}
