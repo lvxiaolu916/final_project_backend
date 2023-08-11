@@ -8,9 +8,7 @@ import com.training.backend.service.RealTimeStockService;
 import com.training.backend.service.StockDetailsService;
 import com.training.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,7 +29,7 @@ public class StockDetailController {
     RealTimeStockService realTimeStockService;
 
     @GetMapping("/getSingleStockDetail/{stockId}")
-    public SingleStockDetail getSingleStockDetail(int userId, int stockId){
+    public SingleStockDetail getSingleStockDetail(@RequestParam(required = false) Integer userId, @PathVariable("stockId") int stockId){
 
         //stockVolume and principalInput
         UserPosition userPosition = userService.findUserPositionByUserIdAndStockId(1,stockId);
@@ -78,7 +76,7 @@ public class StockDetailController {
     }
 
     @GetMapping("/getWeeklyTrendDetails/{stockId}")
-    public List<BigDecimal> getWeeklyTrendDetails(int stockId){
+    public List<BigDecimal> getWeeklyTrendDetails(@PathVariable("stockId") int stockId){
         List<StockDetails> list2 = stockDetailsService.findStockDetailsByUserId(stockId,7);
 
         int count=0;
