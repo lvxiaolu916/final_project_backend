@@ -37,7 +37,7 @@ public class UserController {
             RealTimeStock realTimeStock = realTimeStockService.findRealTimeStockByStockId(u.getStockId());
             UserPosition userPosition = userService.findUserPositionByUserIdAndStockId(u.getUserId(),u.getStockId());
             BigDecimal profits = realTimeStock.getCurrentPrice().multiply(BigDecimal.valueOf(u.getVolume())).subtract(userPosition.getPrincipalInput());
-            BigDecimal returnRates = profits.divide(userPosition.getPrincipalInput(), RoundingMode.HALF_UP);
+            BigDecimal returnRates = profits.divide(userPosition.getPrincipalInput(),6, RoundingMode.HALF_UP);
 
             Portfolio portfolio = new Portfolio();
             portfolio.setStockId(u.getStockId());

@@ -31,16 +31,16 @@ public class RealTimeStockController {
         List<RealTimeStock> realTimeStockAll = realTimeStockService.findRealTimeStockAll();
         for(RealTimeStock r : realTimeStockAll){
             //find the last 2 records about this stock
-            List<StockDetails> stockDetails = stockDetailsService.findUserPositionByUserId(r.getStockId(),2);
+            List<StockDetails> stockDetails = stockDetailsService.findStockDetailsByUserId(r.getStockId(),2);
             BigDecimal oldPrice = stockDetails.get(1).getPrice();
-            BigDecimal fluctuationRate = r.getFluctuation().multiply(oldPrice);
+            BigDecimal fluctuation= r.getFluctuation().multiply(oldPrice);
 
             Market market = new Market();
             market.setStockId(r.getStockId());
             market.setStockName(r.getStockName());
             market.setCurrentPrice(r.getCurrentPrice());
-            market.setPriceFluctuation(r.getFluctuation());
-            market.setFluctuationRate(fluctuationRate);
+            market.setPriceFluctuation(fluctuation);
+            market.setFluctuationRate(r.getFluctuation());
 
             result.add(market);
         }
