@@ -8,12 +8,11 @@ import com.training.backend.service.UserService;
 import com.training.backend.utils.Constant;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.transaction.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin("http://localhost:4200/")
 @Controller
 @RequestMapping("/stockTrading")
 public class StockTradingController {
@@ -33,6 +33,8 @@ public class StockTradingController {
 
     @Autowired
     private RealTimeStockService realTimeStockService;
+
+    private static final Logger logger = LoggerFactory.getLogger(StockTradingController.class);
 
 
 
@@ -59,6 +61,8 @@ public class StockTradingController {
 
 
         List<UserPosition> userPositionList = userService.findUserPositionByUserId(1);
+
+
 
         //start to trading
         for (StockTrainsaction item : tradeList) {
@@ -94,6 +98,7 @@ public class StockTradingController {
         Map<String, String> resMap = new HashMap<>();
         resMap.put("totalValue", totalValue.toString());
         resMap.put("benefit", benefit.setScale(2,RoundingMode.HALF_UP).toString());
+        resMap.put("principal",userService.findUserPrincipalHoldingsByUserId(1).toString());
 
         if (resStatus == Constant.SUCCESS){
             resMap.put("status","SUCCESS");
@@ -106,6 +111,10 @@ public class StockTradingController {
         }else {
             resMap.put("status","USER_POSITION_NOT_ENOUGH_VOLUEM");
         }
+
+        logger.debug(resMap.toString());
+
+
 
         return resMap;
 
