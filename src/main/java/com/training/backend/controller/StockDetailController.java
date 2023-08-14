@@ -15,6 +15,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin("http://localhost:4200/")
 @RestController
 @RequestMapping("/stock-detail")
 public class StockDetailController {

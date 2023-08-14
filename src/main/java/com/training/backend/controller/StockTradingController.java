@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,19 +59,21 @@ public class StockTradingController {
         BigDecimal finalUserPrincipal = BigDecimal.valueOf(0);
         BigDecimal totalValue = BigDecimal.valueOf(0);
         BigDecimal benefit = BigDecimal.valueOf(0);
+        List<UserPosition> userPositionList = null;
 
+        if (tradeList.get(0).getTrainsactionStatus() == Constant.SELL) {
+            userPositionList = userService.findUserPositionByUserId(1);
 
-        List<UserPosition> userPositionList = userService.findUserPositionByUserId(1);
+        }
 
 
 
         //start to trading
         for (StockTrainsaction item : tradeList) {
 
-            UserPosition specifyUserPosition = findSpecifyUserPosition(userPositionList, item.getUserId(), item.getStockId());
-
             if (item.getTrainsactionStatus() == Constant.SELL) {
 
+                UserPosition specifyUserPosition = findSpecifyUserPosition(userPositionList, item.getUserId(), item.getStockId());
 
                 benefit = benefit.add(
                         BigDecimal.valueOf(item.getVolume()).multiply(
@@ -115,6 +118,80 @@ public class StockTradingController {
         logger.debug(resMap.toString());
 
 
+
+        return resMap;
+
+    }
+
+
+    @RequestMapping(path = "/sellAll", method = RequestMethod.GET)
+    @ResponseBody
+    Map<String, String> stockTradingSellAll(){
+
+        int resStatus = Constant.SUCCESS;
+
+        //need to get total value, and benefit from
+        BigDecimal initalUserPrincipal = userService.findUserPrincipalHoldingsByUserId(1);
+        BigDecimal finalUserPrincipal = BigDecimal.valueOf(0);
+        BigDecimal totalValue = BigDecimal.valueOf(0);
+        BigDecimal benefit = BigDecimal.valueOf(0);
+
+
+        List<UserPosition> userPositionList = userService.findUserPositionByUserId(1);
+
+
+
+        //start to trading
+        for (UserPosition item : userPositionList) {
+
+            benefit = benefit.add(
+                    BigDecimal.valueOf(item.getVolume()).multiply(
+                            realTimeStockService.findRealTimeStockByStockId(item.getStockId()).getCurrentPrice()).subtract(
+                            item.getPrincipalInput().multiply(
+                                    BigDecimal.valueOf(item.getVolume()).divide(
+                                            BigDecimal.valueOf(item.getVolume()),6,
+                                            RoundingMode.HALF_UP
+                                    )
+                            )
+                    )
+            );
+
+            StockTrainsaction stockTrainsaction = new StockTrainsaction();
+
+            stockTrainsaction.setStockId(item.getStockId());
+            stockTrainsaction.setUserId(item.getUserId());
+            stockTrainsaction.setTrainsactionStatus(Constant.SELL);
+            stockTrainsaction.setCreateTime(new Date());
+            stockTrainsaction.setVolume(item.getVolume());
+
+            resStatus = stockTradingService.stockTrading(stockTrainsaction);
+
+            if (resStatus != Constant.SUCCESS) {
+                break;
+            }
+        }
+
+        finalUserPrincipal = userService.findUserPrincipalHoldingsByUserId(1);
+        totalValue = finalUserPrincipal.subtract(initalUserPrincipal);
+
+        Map<String, String> resMap = new HashMap<>();
+        resMap.put("totalValue", totalValue.toString());
+        resMap.put("benefit", benefit.setScale(2,RoundingMode.HALF_UP).toString());
+        resMap.put("principal",userService.findUserPrincipalHoldingsByUserId(1).toString());
+
+        if (resStatus == Constant.SUCCESS){
+            resMap.put("status","SUCCESS");
+        }
+        else if (resStatus == Constant.USER_NOT_ENOUGH_PRINCIPAL){
+            resMap.put("status","USER_NOT_ENOUGH_PRINCIPAL");
+        }
+        else if (resStatus == Constant.USER_POSITION_IS_NULL_WHEN_SELL){
+            resMap.put("status","USER_POSITION_IS_NULL_WHEN_SELL");
+        }else {
+            resMap.put("status","USER_POSITION_NOT_ENOUGH_VOLUEM");
+        }
+
+        logger.debug(resMap.toString());
 
         return resMap;
 
