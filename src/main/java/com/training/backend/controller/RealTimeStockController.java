@@ -6,6 +6,7 @@ import com.training.backend.entity.StockDetails;
 import com.training.backend.service.RealTimeStockService;
 import com.training.backend.service.StockDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/realTimeStock")
 public class RealTimeStockController {
