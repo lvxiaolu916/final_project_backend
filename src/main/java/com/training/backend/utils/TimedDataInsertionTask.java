@@ -61,6 +61,11 @@ public class TimedDataInsertionTask {
                 }
                 else {
                     BigDecimal oldPrice = realTimeStockMapper.selectRealTimeStockByStockId(stockId).getCurrentPrice();
+
+                    while (currentPrice.subtract(oldPrice).abs().divide(oldPrice,6,RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.20)) > 0){
+                        currentPrice = BigDecimal.valueOf(Math.random()*100);
+                    }
+
                     realTimeStockMapper.updatePriceByStockId(stockId,currentPrice);
                     realTimeStockMapper.updateFluctuationByStockId(stockId,(currentPrice.subtract(oldPrice)).divide(oldPrice, 6,RoundingMode.HALF_UP).setScale(2,RoundingMode.HALF_UP));
                 }

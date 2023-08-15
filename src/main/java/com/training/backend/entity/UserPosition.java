@@ -38,8 +38,17 @@ public class UserPosition {
         this.principalInput = principalInput;
     }
 
+    public int getFirstStatus() {
+        return firstStatus;
+    }
+
+    public void setFirstStatus(int firstStatus) {
+        this.firstStatus = firstStatus;
+    }
+
     private int userId;
     private int stockId;
     private int volume;
     private BigDecimal principalInput;
+    private int firstStatus;
 }

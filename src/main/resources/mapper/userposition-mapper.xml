@@ -3,15 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.training.backend.dao.UserPositionMapper">
     <sql id="selectFields">
-        user_id, stock_id, volume, principal_input from user_position
+        user_id, stock_id, volume, principal_input, first_status from user_position
     </sql>
 
     <sql id="insertFields">
-        user_id, stock_id, volume, principal_input
+        user_id, stock_id, volume, principal_input, first_status
     </sql>
 
     <update id="updateUserPositionByUserPosition" parameterType="UserPosition">
-        update user_position set volume = #{volume}, principal_input = #{principalInput}
+        update user_position set volume = #{volume}, principal_input = #{principalInput}, first_status = #{firstStatus}
         where user_id = #{userId} and stock_id = #{stockId}
     </update>
 
@@ -26,7 +26,7 @@
 
     <insert id="insertUserPosition" parameterType="UserPosition" >
         insert into user_position (<include refid="insertFields"></include>)
-        values(#{userId}, #{stockId}, #{volume}, #{principalInput})
+        values(#{userId}, #{stockId}, #{volume}, #{principalInput},#{firstStatus})
     </insert>
 
     <select id="selectUserPositionListByUserId" parameterType="Integer" resultType="UserPosition">

@@ -21,6 +21,13 @@
         where user_id = #{userId}
     </select>
 
+    <select id="selectStockTrainsactionByUserIdAndStockId" resultType="StockTrainsaction">
+        select <include refid="selectFields"></include>
+        from stock_trainsaction
+        where user_id = #{userId} and stock_id = #{stockId}
+        order by create_time desc
+    </select>
+
     <insert id="insertStockTrainsaction" parameterType="StockTrainsaction">
         insert into stock_trainsaction (<include refid="insertFields"></include>)
         values(#{stockId}, #{userId}, #{volume}, #{trainsactionStatus}, #{createTime})

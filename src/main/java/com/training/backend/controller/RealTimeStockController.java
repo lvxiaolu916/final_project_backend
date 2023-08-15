@@ -43,7 +43,7 @@ public class RealTimeStockController {
             market.setStockId(r.getStockId());
             market.setStockName(r.getStockName());
             market.setCurrentPrice(r.getCurrentPrice());
-            market.setPriceFluctuation(fluctuation);
+            market.setPriceFluctuation(fluctuation.setScale(2,RoundingMode.HALF_UP));
             market.setFluctuationRate(r.getFluctuation());
 
             result.add(market);

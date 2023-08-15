@@ -17,4 +17,9 @@ public class Constant {
     public static int BUY = 0;
 
     public static int SELL = 1;
+
+    //PositionStatus
+    public static int FIRST_BUY = 1;
+
+    public static int NO_FIRST_BUY = 0;
 }

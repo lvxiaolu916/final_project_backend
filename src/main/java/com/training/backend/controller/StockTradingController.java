@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin("http://localhost:4200/")
 @Controller
@@ -71,8 +68,18 @@ public class StockTradingController {
         //start to trading
         for (StockTrainsaction item : tradeList) {
 
-            if (item.getTrainsactionStatus() == Constant.SELL) {
+            Calendar calendar = Calendar.getInstance();
 
+            calendar.setTime(item.getCreateTime());
+
+            calendar.add(Calendar.HOUR_OF_DAY, -8);
+
+            // 步骤5：获取增加后的时间
+            item.setCreateTime( calendar.getTime());
+
+
+
+            if (item.getTrainsactionStatus() == Constant.SELL) {
                 UserPosition specifyUserPosition = findSpecifyUserPosition(userPositionList, item.getUserId(), item.getStockId());
 
                 benefit = benefit.add(

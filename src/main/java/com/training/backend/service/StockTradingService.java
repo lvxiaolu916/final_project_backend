@@ -19,6 +19,7 @@ import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -97,6 +98,7 @@ public class StockTradingService {
                 userPositionTemplete.setUserId(userId);
                 userPositionTemplete.setStockId(stockId);
                 userPositionTemplete.setVolume(userPosition.getVolume()-volume);
+                userPositionTemplete.setFirstStatus(Constant.NO_FIRST_BUY);
 
                 BigDecimal rate = (BigDecimal.valueOf(userPosition.getVolume()).subtract(BigDecimal.valueOf(volume))).divide(BigDecimal.valueOf(userPosition.getVolume()), 6,RoundingMode.HALF_UP).setScale(2,RoundingMode.HALF_UP);
 //                logger.info("rate is :"+String.valueOf(rate));
@@ -111,6 +113,7 @@ public class StockTradingService {
                 userPositionTemplete.setUserId(userId);
                 userPositionTemplete.setStockId(stockId);
                 userPositionTemplete.setVolume(userPosition.getVolume()+volume);
+                userPositionTemplete.setFirstStatus(Constant.NO_FIRST_BUY);
 
                 //PrincipalInput only will be changed when buy stock
                 userPositionTemplete.setPrincipalInput(userPosition.getPrincipalInput().add(totalTransactionPrice));
@@ -124,6 +127,7 @@ public class StockTradingService {
                 userPositionTemplete.setUserId(userId);
                 userPositionTemplete.setStockId(stockId);
                 userPositionTemplete.setVolume(volume);
+                userPositionTemplete.setFirstStatus(Constant.FIRST_BUY);
 
                 //PrincipalInput only will be changed when buy stock
                 userPositionTemplete.setPrincipalInput(totalTransactionPrice);
@@ -178,6 +182,14 @@ public class StockTradingService {
 
         return Constant.SUCCESS;
 
+    }
+
+    public StockTrainsaction findLastStockTrainsactionByUserIdAndStockId(int userId, int stockId) {
+        List<StockTrainsaction> stockTrainsactionList = stockTrainsactionMapper.selectStockTrainsactionByUserIdAndStockId(userId, stockId);
+        if (stockTrainsactionList.size()>0)
+            return  stockTrainsactionList.get(0);
+        else
+            return null;
     }
 
 }

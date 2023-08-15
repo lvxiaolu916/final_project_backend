@@ -29,6 +29,7 @@ create table user_position (
   stock_id int NOT NULL,
   volume int DEFAULT NULL,
   principal_input decimal(18,2) DEFAULT NULL,
+  first_status int default NULL,
   PRIMARY KEY (user_id, stock_id)
 );
 create table stock_details (

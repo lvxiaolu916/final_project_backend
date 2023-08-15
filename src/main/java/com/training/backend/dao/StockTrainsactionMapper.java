@@ -11,4 +11,6 @@ public interface StockTrainsactionMapper {
     int insertStockTrainsaction(StockTrainsaction stockTrainsaction);
 
     List<StockTrainsaction> selectStockTrainsactionByUserId(int userId);
+
+    List<StockTrainsaction> selectStockTrainsactionByUserIdAndStockId(int userId, int stockId);
 }

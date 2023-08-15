@@ -1,18 +1,19 @@
 package com.training.backend.controller;
 
-import com.training.backend.entity.RealTimeStock;
-import com.training.backend.entity.SingleStockDetail;
-import com.training.backend.entity.StockDetails;
-import com.training.backend.entity.UserPosition;
+import com.training.backend.entity.*;
 import com.training.backend.service.RealTimeStockService;
 import com.training.backend.service.StockDetailsService;
+import com.training.backend.service.StockTradingService;
 import com.training.backend.service.UserService;
+import com.training.backend.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin("http://localhost:4200/")
@@ -28,6 +29,9 @@ public class StockDetailController {
 
     @Autowired
     RealTimeStockService realTimeStockService;
+
+    @Autowired
+    StockTradingService stockTradingService;
 
     @GetMapping("/getSingleStockDetail/{stockId}")
     public SingleStockDetail getSingleStockDetail(@RequestParam(required = false) Integer userId, @PathVariable("stockId") int stockId){
@@ -76,10 +80,29 @@ public class StockDetailController {
             }
         }
 
+
+        StockTrainsaction stockTrainsaction = stockTradingService.findLastStockTrainsactionByUserIdAndStockId(1,stockId);
+
+        //used to compare the difference of purchase time
+        Date lastTransactionTime = null;
+        Date currentStockTime = null;
+
+        if (stockTrainsaction != null)
+        {
+            lastTransactionTime = stockTrainsaction.getCreateTime();
+            currentStockTime = list.get(0).getTime();
+
+        }
+
         //currentInterestRate
-        if (userHasThisStock) {
-            currentInterestRate = ((newPrice.multiply(BigDecimal.valueOf(stockVolume))).subtract(principalInput))
-                    .divide(principalInput, 6,RoundingMode.HALF_UP);
+        if (stockTrainsaction!=null &&
+                ((userHasThisStock && userPosition.getFirstStatus() == Constant.NO_FIRST_BUY)||
+                        currentStockTime.compareTo(lastTransactionTime) > 0)) {
+
+            if (principalInput.compareTo(BigDecimal.valueOf(0))!=0) {
+                currentInterestRate = ((newPrice.multiply(BigDecimal.valueOf(stockVolume))).subtract(principalInput))
+                        .divide(principalInput, 6, RoundingMode.HALF_UP);
+            }
         }
 
         SingleStockDetail singleStockDetail = new SingleStockDetail();
