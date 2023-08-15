@@ -31,7 +31,7 @@ public class TimedDataInsertionTask {
     @Autowired
     //线程池
     private ThreadPoolExecutor executor;
-    @Scheduled(cron = "0/60 * * * * ?") //每隔20秒执行一次
+    @Scheduled(cron = "0/10 * * * * ?") //每隔20秒执行一次
     public void  addList(){
 
         logger.debug("task has been triggered");

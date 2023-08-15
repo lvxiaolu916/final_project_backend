@@ -33,9 +33,23 @@ public class StockDetailController {
     public SingleStockDetail getSingleStockDetail(@RequestParam(required = false) Integer userId, @PathVariable("stockId") int stockId){
 
         //stockVolume and principalInput
-        UserPosition userPosition = userService.findUserPositionByUserIdAndStockId(1,stockId);
-        int stockVolume = userPosition.getVolume();
-        BigDecimal principalInput = userPosition.getPrincipalInput();
+        boolean userHasThisStock = true;
+        int stockVolume = 0;
+        UserPosition userPosition = null;
+        BigDecimal currentInterestRate = BigDecimal.valueOf(0);
+        BigDecimal principalInput = BigDecimal.valueOf(0);
+
+        try {
+            userPosition = userService.findUserPositionByUserIdAndStockId(1,stockId);
+        }catch (IllegalArgumentException exception) {
+            userHasThisStock = false;
+        }
+
+        if (userHasThisStock) {
+            stockVolume = userPosition.getVolume();
+            principalInput = userPosition.getPrincipalInput();
+        }
+
         String stockName = realTimeStockService.findRealTimeStockByStockId(stockId).getStockName();
         BigDecimal holdingPrincipal = userService.findUserPrincipalHoldingsByUserId(1);
 
@@ -63,17 +77,19 @@ public class StockDetailController {
         }
 
         //currentInterestRate
-        BigDecimal currentInterestRate = ((newPrice.multiply(BigDecimal.valueOf(stockVolume))).subtract(principalInput))
-                                         .divide(principalInput, 6,RoundingMode.HALF_UP);
+        if (userHasThisStock) {
+            currentInterestRate = ((newPrice.multiply(BigDecimal.valueOf(stockVolume))).subtract(principalInput))
+                    .divide(principalInput, 6,RoundingMode.HALF_UP);
+        }
 
         SingleStockDetail singleStockDetail = new SingleStockDetail();
-        singleStockDetail.setFluctuationPrice(fluctuationPrice);
+        singleStockDetail.setFluctuationPrice(fluctuationPrice.setScale(2,RoundingMode.HALF_UP));
         singleStockDetail.setFluctuationRate(fluctuationRate);
         singleStockDetail.setMaxPrice(maxPrice);
         singleStockDetail.setMinPrice(minPrice);
         singleStockDetail.setHoldingVolume(stockVolume);
-        singleStockDetail.setCurrentPrice(newPrice);
-        singleStockDetail.setCurrentInterestRate(currentInterestRate);
+        singleStockDetail.setCurrentPrice(newPrice.setScale(2,RoundingMode.HALF_UP));
+        singleStockDetail.setCurrentInterestRate(currentInterestRate.setScale(2,RoundingMode.HALF_UP));
         singleStockDetail.setStockName(stockName);
         singleStockDetail.setHoldingPrincipal(holdingPrincipal);
 
