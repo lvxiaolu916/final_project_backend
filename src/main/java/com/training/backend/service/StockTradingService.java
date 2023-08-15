@@ -100,7 +100,7 @@ public class StockTradingService {
                 userPositionTemplete.setVolume(userPosition.getVolume()-volume);
                 userPositionTemplete.setFirstStatus(Constant.NO_FIRST_BUY);
 
-                BigDecimal rate = (BigDecimal.valueOf(userPosition.getVolume()).subtract(BigDecimal.valueOf(volume))).divide(BigDecimal.valueOf(userPosition.getVolume()), 6,RoundingMode.HALF_UP).setScale(2,RoundingMode.HALF_UP);
+                BigDecimal rate = (BigDecimal.valueOf(userPosition.getVolume()).subtract(BigDecimal.valueOf(volume))).divide(BigDecimal.valueOf(userPosition.getVolume()), 12,RoundingMode.HALF_UP).setScale(2,RoundingMode.HALF_UP);
 //                logger.info("rate is :"+String.valueOf(rate));
 
                 userPositionTemplete.setPrincipalInput(userPosition.getPrincipalInput().multiply(rate));

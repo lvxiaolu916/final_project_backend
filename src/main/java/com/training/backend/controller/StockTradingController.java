@@ -87,7 +87,7 @@ public class StockTradingController {
                                  realTimeStockService.findRealTimeStockByStockId(item.getStockId()).getCurrentPrice()).subtract(
                         specifyUserPosition.getPrincipalInput().multiply(
                                 BigDecimal.valueOf(item.getVolume()).divide(
-                                        BigDecimal.valueOf(specifyUserPosition.getVolume()),6,
+                                        BigDecimal.valueOf(specifyUserPosition.getVolume()),12,
                                         RoundingMode.HALF_UP
                                 )
                         )
@@ -156,7 +156,7 @@ public class StockTradingController {
                             realTimeStockService.findRealTimeStockByStockId(item.getStockId()).getCurrentPrice()).subtract(
                             item.getPrincipalInput().multiply(
                                     BigDecimal.valueOf(item.getVolume()).divide(
-                                            BigDecimal.valueOf(item.getVolume()),6,
+                                            BigDecimal.valueOf(item.getVolume()),12,
                                             RoundingMode.HALF_UP
                                     )
                             )

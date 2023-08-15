@@ -101,7 +101,7 @@ public class StockDetailController {
 
             if (principalInput.compareTo(BigDecimal.valueOf(0))!=0) {
                 currentInterestRate = ((newPrice.multiply(BigDecimal.valueOf(stockVolume))).subtract(principalInput))
-                        .divide(principalInput, 6, RoundingMode.HALF_UP);
+                        .divide(principalInput, 12, RoundingMode.HALF_UP);
             }
         }
 

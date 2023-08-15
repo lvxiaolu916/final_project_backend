@@ -31,7 +31,7 @@ public class TimedDataInsertionTask {
     @Autowired
     //线程池
     private ThreadPoolExecutor executor;
-    @Scheduled(cron = "0/10 * * * * ?") //每隔20秒执行一次
+    @Scheduled(cron = "0/30 * * * * ?") //每隔20秒执行一次
     public void  addList(){
 
         logger.debug("task has been triggered");
@@ -45,12 +45,6 @@ public class TimedDataInsertionTask {
 
                 BigDecimal currentPrice = BigDecimal.valueOf(Math.random()*100);
 
-                StockDetails stockDetails = new StockDetails();
-                stockDetails.setStockName("test_"+String.valueOf(stockId));
-                stockDetails.setStockId(stockId);
-                stockDetails.setTime(new Date());
-                stockDetails.setPrice(currentPrice);
-
                 if ( realTimeStockMapper.selectRealTimeStockByStockId(stockId) == null){
                     RealTimeStock realTimeStock = new RealTimeStock();
                     realTimeStock.setStockId(stockId);
@@ -62,14 +56,19 @@ public class TimedDataInsertionTask {
                 else {
                     BigDecimal oldPrice = realTimeStockMapper.selectRealTimeStockByStockId(stockId).getCurrentPrice();
 
-                    while (currentPrice.subtract(oldPrice).abs().divide(oldPrice,6,RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.20)) > 0){
+                    while (currentPrice.subtract(oldPrice).abs().divide(oldPrice,12,RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.20)) > 0){
                         currentPrice = BigDecimal.valueOf(Math.random()*100);
                     }
 
                     realTimeStockMapper.updatePriceByStockId(stockId,currentPrice);
-                    realTimeStockMapper.updateFluctuationByStockId(stockId,(currentPrice.subtract(oldPrice)).divide(oldPrice, 6,RoundingMode.HALF_UP).setScale(2,RoundingMode.HALF_UP));
+                    realTimeStockMapper.updateFluctuationByStockId(stockId,(currentPrice.subtract(oldPrice)).divide(oldPrice, 12,RoundingMode.HALF_UP).setScale(2,RoundingMode.HALF_UP));
                 }
 
+                StockDetails stockDetails = new StockDetails();
+                stockDetails.setStockName("test_"+String.valueOf(stockId));
+                stockDetails.setStockId(stockId);
+                stockDetails.setTime(new Date());
+                stockDetails.setPrice(currentPrice);
                 stockDetailsList.add(stockDetails);
                }
 
