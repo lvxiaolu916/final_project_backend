@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 
 public class SingleStockDetail {
 
+
+    private String stockName;
+
+    private BigDecimal holdingPrincipal;
+
     private int holdingVolume;
     private BigDecimal fluctuationRate;
     private BigDecimal fluctuationPrice;
@@ -12,9 +17,27 @@ public class SingleStockDetail {
     private BigDecimal currentPrice;
     private BigDecimal currentInterestRate;
 
+
     public int getHoldingVolume() {
         return holdingVolume;
     }
+
+    public void setHoldingPrincipal(BigDecimal holdingPrincipal) {
+        this.holdingPrincipal = holdingPrincipal;
+    }
+
+    public String getStockName() {
+        return stockName;
+    }
+
+    public void setStockName(String stockName) {
+        this.stockName = stockName;
+    }
+
+    public BigDecimal getHoldingPrincipal() {
+        return holdingPrincipal;
+    }
+
 
     public void setHoldingVolume(int holdingVolume) {
         this.holdingVolume = holdingVolume;

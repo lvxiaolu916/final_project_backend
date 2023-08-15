@@ -36,6 +36,8 @@ public class StockDetailController {
         UserPosition userPosition = userService.findUserPositionByUserIdAndStockId(1,stockId);
         int stockVolume = userPosition.getVolume();
         BigDecimal principalInput = userPosition.getPrincipalInput();
+        String stockName = realTimeStockService.findRealTimeStockByStockId(stockId).getStockName();
+        BigDecimal holdingPrincipal = userService.findUserPrincipalHoldingsByUserId(1);
 
 
         List<StockDetails> list = stockDetailsService.findStockDetailsByUserId(stockId,7);
@@ -72,6 +74,8 @@ public class StockDetailController {
         singleStockDetail.setHoldingVolume(stockVolume);
         singleStockDetail.setCurrentPrice(newPrice);
         singleStockDetail.setCurrentInterestRate(currentInterestRate);
+        singleStockDetail.setStockName(stockName);
+        singleStockDetail.setHoldingPrincipal(holdingPrincipal);
 
         return singleStockDetail;
     }
