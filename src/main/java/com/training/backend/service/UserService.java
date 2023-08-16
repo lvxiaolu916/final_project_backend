@@ -40,12 +40,7 @@ public class UserService {
 
     public List<UserPosition> findUserPositionByUserId(int userId){
         List<UserPosition> result = userPositionMapper.selectUserPositionListByUserId(userId);
-        if(result!=null&&result.size()!=0){
-            return result;
-        }else{
-            logger.error("result is null");
-            throw new IllegalArgumentException("userId not found: "+userId);
-        }
+        return result;
     }
 
     public UserPosition findUserPositionByUserIdAndStockId(int userId,int stockId){

@@ -91,7 +91,6 @@ public class StockDetailController {
         {
             lastTransactionTime = stockTrainsaction.getCreateTime();
             currentStockTime = list.get(0).getTime();
-
         }
 
         //currentInterestRate

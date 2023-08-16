@@ -1,5 +1,7 @@
 package com.training.backend.utils;
 
+import java.util.HashMap;
+
 public class Constant {
 
     //trading correlation
@@ -22,4 +24,5 @@ public class Constant {
     public static int FIRST_BUY = 1;
 
     public static int NO_FIRST_BUY = 0;
+
 }
