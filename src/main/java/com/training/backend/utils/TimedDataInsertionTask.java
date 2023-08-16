@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;
 
 @Component
@@ -31,10 +29,42 @@ public class TimedDataInsertionTask {
     @Autowired
     //线程池
     private ThreadPoolExecutor executor;
-    @Scheduled(cron = "0/30 * * * * ?") //每隔20秒执行一次
+
+    private Map<Integer, String> getStockNameMap(){
+
+        HashMap<Integer,String> stockNameMap = new HashMap<>();
+        stockNameMap.put(1,"MSFT");
+        stockNameMap.put(2,"GOOG");
+        stockNameMap.put(3,"AAPL");
+        stockNameMap.put(4,"YHOO");
+        stockNameMap.put(5,"ORCL");
+        stockNameMap.put(6,"DELL");
+        stockNameMap.put(7,"IBM");
+        stockNameMap.put(8,"EPAY");
+        stockNameMap.put(9,"INTC");
+        stockNameMap.put(10,"AMZN");
+        stockNameMap.put(11,"HPQ");
+        stockNameMap.put(12,"QCOM");
+        stockNameMap.put(13,"ERIC");
+        stockNameMap.put(14,"CSCO");
+        stockNameMap.put(15,"MOT");
+        stockNameMap.put(16,"XRX");
+        stockNameMap.put(17,"VOD");
+        stockNameMap.put(18,"TXN");
+        stockNameMap.put(19,"ADS");
+        stockNameMap.put(20,"NOK");
+
+        return stockNameMap;
+    }
+
+    @Scheduled(cron = "0/10 * * * * ?") //每隔20秒执行一次
     public void  addList(){
 
+
+
         logger.debug("task has been triggered");
+
+        Map<Integer,String> stockNameMap = getStockNameMap();
 
         Thread thread = new Thread(() -> {
 
@@ -48,7 +78,7 @@ public class TimedDataInsertionTask {
                 if ( realTimeStockMapper.selectRealTimeStockByStockId(stockId) == null){
                     RealTimeStock realTimeStock = new RealTimeStock();
                     realTimeStock.setStockId(stockId);
-                    realTimeStock.setStockName("test_"+String.valueOf(stockId));
+                    realTimeStock.setStockName(stockNameMap.get(stockId));
                     realTimeStock.setCurrentPrice(currentPrice);
                     realTimeStock.setFluctuation(BigDecimal.valueOf(0));
                     realTimeStockMapper.insertRealTimeStock(realTimeStock);
@@ -65,7 +95,7 @@ public class TimedDataInsertionTask {
                 }
 
                 StockDetails stockDetails = new StockDetails();
-                stockDetails.setStockName("test_"+String.valueOf(stockId));
+                stockDetails.setStockName(stockNameMap.get(stockId));
                 stockDetails.setStockId(stockId);
                 stockDetails.setTime(new Date());
                 stockDetails.setPrice(currentPrice);
