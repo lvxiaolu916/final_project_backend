@@ -128,6 +128,7 @@ public class StockDetailController {
             result.add(list2.get(count).getPrice());
             count++;
         }
+
         return result;
     }
 }

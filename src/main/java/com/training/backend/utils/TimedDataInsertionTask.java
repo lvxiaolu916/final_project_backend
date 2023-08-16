@@ -74,6 +74,8 @@ public class TimedDataInsertionTask {
             for(int stockId = 1; stockId <= 20; stockId++) {
 
                 BigDecimal currentPrice = BigDecimal.valueOf(Math.random()*100);
+                while (currentPrice.compareTo(BigDecimal.valueOf(30)) < 0)
+                    currentPrice = BigDecimal.valueOf(Math.random()*100);
 
                 if ( realTimeStockMapper.selectRealTimeStockByStockId(stockId) == null){
                     RealTimeStock realTimeStock = new RealTimeStock();
