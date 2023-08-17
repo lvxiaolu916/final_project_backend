@@ -9,7 +9,7 @@ System UI as follw
 
 ![image](images/market_2.jpg)
 
-![image](images/portfolio_1.jpg)
+![image](images/portfolio_2.jpg)
 
 ![image](images/stockdetails_1.png)
 
