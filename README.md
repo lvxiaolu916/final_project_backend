@@ -7,9 +7,9 @@ The system structure diagram is shown as follow
 System UI as follw
 
 
-![image](images/market_1.png)
+![image](images/market_1.jpg)
 
-![image](images/portfolio_1.png)
+![image](images/portfolio_1.jpg)
 
 ![image](images/stockdetails_1.png)
 
