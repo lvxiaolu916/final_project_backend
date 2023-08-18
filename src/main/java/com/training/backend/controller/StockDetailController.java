@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin
 @RestController
 @RequestMapping("/stock-detail")
 public class StockDetailController {

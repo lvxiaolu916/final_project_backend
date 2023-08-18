@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin
 @Controller
 @RequestMapping("/stockTrading")
 public class StockTradingController {
