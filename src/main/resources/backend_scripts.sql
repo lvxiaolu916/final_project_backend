@@ -39,3 +39,5 @@ create table stock_details (
   price decimal(18,2) DEFAULT NULL,
   PRIMARY KEY (stock_id, time)
 );
+
+insert into user values (1,'jingkai','male',10000);
