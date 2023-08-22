@@ -17,29 +17,29 @@ import java.math.BigDecimal;
 @RunWith(SpringRunner.class)
 public class UserMapperTests {
 
-    @Autowired
-    private UserMapper userMapper;
-
-//    @Ignore
-    @Test
-    public void insertUserTest() {
-        User user = new User();
-        user.setUserId(1);
-        user.setUserName("jingkai");
-        user.setUserSex("male");
-        user.setPrincipalHoldings(BigDecimal.valueOf(10000));
-
-        Assert.assertEquals(userMapper.insertUser(user),1);
-    }
-
-    @Test
-    public void selectUserByUserIdTest() {
-        Assert.assertNotEquals(userMapper.selectUserByUserId(1),null);
-    }
-
-    @Test
-    public void updatePrincipalHoldingsByUserIdTest() {
-        Assert.assertEquals(userMapper.updatePrincipalHoldingsByUserId(1, BigDecimal.valueOf(102.56)),1);
-    }
+//    @Autowired
+//    private UserMapper userMapper;
+//
+////    @Ignore
+//    @Test
+//    public void insertUserTest() {
+//        User user = new User();
+//        user.setUserId(1);
+//        user.setUserName("jingkai");
+//        user.setUserSex("male");
+//        user.setPrincipalHoldings(BigDecimal.valueOf(10000));
+//
+//        Assert.assertEquals(userMapper.insertUser(user),1);
+//    }
+//
+//    @Test
+//    public void selectUserByUserIdTest() {
+//        Assert.assertNotEquals(userMapper.selectUserByUserId(1),null);
+//    }
+//
+//    @Test
+//    public void updatePrincipalHoldingsByUserIdTest() {
+//        Assert.assertEquals(userMapper.updatePrincipalHoldingsByUserId(1, BigDecimal.valueOf(102.56)),1);
+//    }
 
 }

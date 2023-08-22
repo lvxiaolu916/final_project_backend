@@ -1,0 +1,13 @@
+# this is test_demo dockerfile
+# version 1.0
+# 基础镜像
+FROM openjdk:17-jre
+
+# 创建目录
+RUN mkdir -p /home/app
+# 拷贝项目jar
+COPY backend-0.0.1-SNAPSHOT.jar /home/app/app.jar
+# 执行命令启动jar
+ENTRYPOINT ["java","-jar","/home/app/app.jar"]
+# 暴露端口
+EXPOSE 8080

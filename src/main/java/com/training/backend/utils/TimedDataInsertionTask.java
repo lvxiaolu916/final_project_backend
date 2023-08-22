@@ -74,10 +74,13 @@ public class TimedDataInsertionTask {
             for(int stockId = 1; stockId <= 20; stockId++) {
 
                 BigDecimal currentPrice = BigDecimal.valueOf(Math.random()*100);
-                while (currentPrice.compareTo(BigDecimal.valueOf(30)) < 0)
-                    currentPrice = BigDecimal.valueOf(Math.random()*100);
 
                 if ( realTimeStockMapper.selectRealTimeStockByStockId(stockId) == null){
+
+                    while (currentPrice.compareTo(BigDecimal.valueOf(30)) < 0)
+                        currentPrice = BigDecimal.valueOf(Math.random()*100);
+
+
                     RealTimeStock realTimeStock = new RealTimeStock();
                     realTimeStock.setStockId(stockId);
                     realTimeStock.setStockName(stockNameMap.get(stockId));
@@ -88,12 +91,15 @@ public class TimedDataInsertionTask {
                 else {
                     BigDecimal oldPrice = realTimeStockMapper.selectRealTimeStockByStockId(stockId).getCurrentPrice();
 
-                    while (currentPrice.subtract(oldPrice).abs().divide(oldPrice,12,RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.20)) > 0){
+                    while (currentPrice.subtract(oldPrice).abs().divide(oldPrice,24,RoundingMode.HALF_UP).compareTo(BigDecimal.valueOf(0.30)) > 0){
                         currentPrice = BigDecimal.valueOf(Math.random()*100);
+                    }
+                    if(currentPrice.compareTo(BigDecimal.valueOf(1))<0){
+                        currentPrice = BigDecimal.valueOf(1);
                     }
 
                     realTimeStockMapper.updatePriceByStockId(stockId,currentPrice);
-                    realTimeStockMapper.updateFluctuationByStockId(stockId,(currentPrice.subtract(oldPrice)).divide(oldPrice, 12,RoundingMode.HALF_UP).setScale(2,RoundingMode.HALF_UP));
+                    realTimeStockMapper.updateFluctuationByStockId(stockId,(currentPrice.subtract(oldPrice)).divide(oldPrice, 24,RoundingMode.HALF_UP).setScale(2,RoundingMode.HALF_UP));
                 }
 
                 StockDetails stockDetails = new StockDetails();

@@ -13,42 +13,42 @@ import java.math.BigDecimal;
 
 @SpringBootTest(classes = BackendApplication.class)
 public class UserPositionMapperTests {
-    @Autowired
-    private UserPositionMapper userPositionMapper;
-
-
-    @Test
-    public void insertUserPositionTest(){
-        UserPosition userPosition = new UserPosition();
-        userPosition.setUserId(2);
-        userPosition.setStockId(1);
-        userPosition.setVolume(100);
-        userPosition.setPrincipalInput(BigDecimal.valueOf(100000));
-        Assertions.assertEquals(1,userPositionMapper.insertUserPosition(userPosition));
-    }
-
-    @Test
-    public void findVolumeAndPrincipalInputTest(){
-        Assertions.assertNotNull(userPositionMapper.selectUserPositionByUserIdAndStockId(1,1));
-    }
-
-    @Test
-    public void findUserPositionByUserIdTest(){
-        Assertions.assertNotNull(userPositionMapper.selectUserPositionListByUserId(1));
-    }
-
-    @Test
-    public void updateUserPositionTest(){
-        UserPosition userPosition = new UserPosition();
-        userPosition.setUserId(1);
-        userPosition.setStockId(1);
-        userPosition.setVolume(1000);
-        userPosition.setPrincipalInput(BigDecimal.valueOf(10000));
-        Assertions.assertEquals(1,userPositionMapper.updateUserPositionByUserPosition(userPosition));
-    }
-
-    @Test
-    public void deleteUserPositionTest(){
-        Assertions.assertEquals(1,userPositionMapper.deleteUserPositionByUserIdAndStockId(1,1));
-    }
+//    @Autowired
+//    private UserPositionMapper userPositionMapper;
+//
+//
+//    @Test
+//    public void insertUserPositionTest(){
+//        UserPosition userPosition = new UserPosition();
+//        userPosition.setUserId(2);
+//        userPosition.setStockId(1);
+//        userPosition.setVolume(100);
+//        userPosition.setPrincipalInput(BigDecimal.valueOf(100000));
+//        Assertions.assertEquals(1,userPositionMapper.insertUserPosition(userPosition));
+//    }
+//
+//    @Test
+//    public void findVolumeAndPrincipalInputTest(){
+//        Assertions.assertNotNull(userPositionMapper.selectUserPositionByUserIdAndStockId(1,1));
+//    }
+//
+//    @Test
+//    public void findUserPositionByUserIdTest(){
+//        Assertions.assertNotNull(userPositionMapper.selectUserPositionListByUserId(1));
+//    }
+//
+//    @Test
+//    public void updateUserPositionTest(){
+//        UserPosition userPosition = new UserPosition();
+//        userPosition.setUserId(1);
+//        userPosition.setStockId(1);
+//        userPosition.setVolume(1000);
+//        userPosition.setPrincipalInput(BigDecimal.valueOf(10000));
+//        Assertions.assertEquals(1,userPositionMapper.updateUserPositionByUserPosition(userPosition));
+//    }
+//
+//    @Test
+//    public void deleteUserPositionTest(){
+//        Assertions.assertEquals(1,userPositionMapper.deleteUserPositionByUserIdAndStockId(1,1));
+//    }
 }

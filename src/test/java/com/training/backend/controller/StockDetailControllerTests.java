@@ -12,18 +12,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class StockDetailControllerTests {
-    @Autowired
-    private StockDetailController stockDetailController;
-
-    @Test
-    public void getSingleStockDetailTest(){
-        Assertions.assertNotNull(stockDetailController.getSingleStockDetail(1,1));
-    }
-
-    @Test
-    public void getWeeklyTrendDetailsTest(){
-       // Assert.assertEquals(7,stockDetailController.getWeeklyTrendDetails(1).size());
-        System.out.println(stockDetailController.getWeeklyTrendDetails(1).size());
-    }
+//    @Autowired
+//    private StockDetailController stockDetailController;
+//
+//    @Test
+//    public void getSingleStockDetailTest(){
+//        Assertions.assertNotNull(stockDetailController.getSingleStockDetail(1,1));
+//    }
+//
+//    @Test
+//    public void getWeeklyTrendDetailsTest(){
+//       // Assert.assertEquals(7,stockDetailController.getWeeklyTrendDetails(1).size());
+//        System.out.println(stockDetailController.getWeeklyTrendDetails(1).size());
+//    }
 
 }

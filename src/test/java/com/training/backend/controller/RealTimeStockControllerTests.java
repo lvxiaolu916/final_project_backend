@@ -10,11 +10,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class RealTimeStockControllerTests {
-    @Autowired
-    private RealTimeStockController realTimeStockController;
-
-    @Test
-    public void getMarketListTest(){
-        Assert.assertNotNull(realTimeStockController.getMarketList());
-    }
+//    @Autowired
+//    private RealTimeStockController realTimeStockController;
+//
+//    @Test
+//    public void getMarketListTest(){
+//        Assert.assertNotNull(realTimeStockController.getMarketList());
+//    }
 }

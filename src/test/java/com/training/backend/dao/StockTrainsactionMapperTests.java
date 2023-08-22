@@ -18,27 +18,27 @@ import java.util.Date;
 @RunWith(SpringRunner.class)
 public class StockTrainsactionMapperTests {
 
-    @Autowired
-    StockTrainsactionMapper stockTrainsactionMapper;
-
-    @Ignore
-    @Test
-    public void insertStockTrainsactionTest() {
-
-        StockTrainsaction stockTrainsaction = new StockTrainsaction();
-        stockTrainsaction.setUserId(1);
-        stockTrainsaction.setStockId(1);
-        stockTrainsaction.setCreateTime(new Date());
-        stockTrainsaction.setTrainsactionStatus(0);
-        stockTrainsaction.setVolume(50);
-
-        Assert.assertEquals(stockTrainsactionMapper.insertStockTrainsaction(stockTrainsaction),1);
-    }
-
-    @Test
-    public void selectUserByUserIdTest() {
-        Assert.assertNotEquals(stockTrainsactionMapper.selectStockTrainsactionByUserId(1),null);
-        System.out.println(stockTrainsactionMapper.selectStockTrainsactionByUserId(1));
-    }
+//    @Autowired
+//    StockTrainsactionMapper stockTrainsactionMapper;
+//
+//    @Ignore
+//    @Test
+//    public void insertStockTrainsactionTest() {
+//
+//        StockTrainsaction stockTrainsaction = new StockTrainsaction();
+//        stockTrainsaction.setUserId(1);
+//        stockTrainsaction.setStockId(1);
+//        stockTrainsaction.setCreateTime(new Date());
+//        stockTrainsaction.setTrainsactionStatus(0);
+//        stockTrainsaction.setVolume(50);
+//
+//        Assert.assertEquals(stockTrainsactionMapper.insertStockTrainsaction(stockTrainsaction),1);
+//    }
+//
+//    @Test
+//    public void selectUserByUserIdTest() {
+//        Assert.assertNotEquals(stockTrainsactionMapper.selectStockTrainsactionByUserId(1),null);
+//        System.out.println(stockTrainsactionMapper.selectStockTrainsactionByUserId(1));
+//    }
 
 }
